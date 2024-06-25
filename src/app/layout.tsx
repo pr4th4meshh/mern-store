@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
-import { Inter, Poppins } from "next/font/google"
+import { Poppins } from "next/font/google"
 import "./globals.css"
-import StoreProvider from "./StoreProvider"
 import MainLayout from "@/components/layouts/MainLayout"
+import { PersistGate } from "redux-persist/integration/react"
+import { persistor, store } from "@/lib/store"
+import { Provider } from "react-redux"
+import StoreProvider from "./StoreProvider"
 
 const poppins = Poppins({weight: ["400"], subsets: ['latin']})
 
