@@ -1,12 +1,14 @@
 "use client"
-import React, { ReactNode, useEffect, useState } from "react"
+import React from "react"
 import { UserOutlined, ShopOutlined, HeartOutlined } from "@ant-design/icons"
-import { Avatar, Layout, Menu } from "antd"
+import { Layout } from "antd"
 import { useSelector } from "react-redux"
 import { Footer } from "antd/es/layout/layout"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { selectCurrentUser } from "@/lib/slices/userSlice"
+import logo from "../../../public/REINlight.svg"
+import Image from "next/image"
 
 const { Header, Content } = Layout
 
@@ -33,7 +35,7 @@ const MainLayout = ({ children }: any) => {
           ))}
         </div>
 
-        <span className="flex flex-1 justify-center">P4-STORE</span>
+        <Image src={logo} height={120} width={150} quality={100} alt="reinventory" />
 
         <div className="flex flex-1 justify-end gap-7 items-center">
           <span>

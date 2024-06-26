@@ -10,7 +10,7 @@ import StoreProvider from "./StoreProvider"
 const poppins = Poppins({weight: ["400"], subsets: ['latin']})
 
 export const metadata: Metadata = {
-  title: "Mern-Store",
+  title: "RE-IN",
   description: "Developed by @pr4th4meshh on GitHub",
 }
 
