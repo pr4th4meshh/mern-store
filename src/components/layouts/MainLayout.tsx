@@ -4,7 +4,6 @@ import { UserOutlined, ShopOutlined, HeartOutlined } from "@ant-design/icons"
 import { Layout } from "antd"
 import { useSelector } from "react-redux"
 import { Footer } from "antd/es/layout/layout"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { selectCurrentUser } from "@/lib/slices/userSlice"
 import logo from "../../../public/REINlight.svg"
@@ -22,11 +21,9 @@ const NAV_LINKS = [
 
 const MainLayout = ({ children }: any) => {
   const user = useSelector(selectCurrentUser)
-  console.log(user)
-  const router = useRouter()
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Header className="flex items-center py-12 bg-white text-lg font-semibold border-b">
+      <Header className="hidden md:flex items-center py-12 bg-white text-lg font-semibold border-b">
         <div className="flex flex-1">
           {NAV_LINKS.map((tab) => (
             <Link href={tab.key} key={tab.key} className="px-3 uppercase">
@@ -70,7 +67,7 @@ const MainLayout = ({ children }: any) => {
         </Content>
       </Layout>
       <Footer style={{ textAlign: "center" }}>
-        Pr4th4meshh Dashboard ©{new Date().getFullYear()} | Created by{" "}
+        Re-Inventory | RE-IN ©{new Date().getFullYear()} | Created by{" "}
         <a
           target="_blank"
           rel="noopener"
