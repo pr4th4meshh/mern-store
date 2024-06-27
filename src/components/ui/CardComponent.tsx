@@ -27,8 +27,7 @@ const CardComponent = ({
               height="0"
               width="0"
               sizes="100vw"
-              className="md:w-[400px] md:h-[400px] h-[360px] w-full object-cover rounded-2xl"
-              placeholder='blur'
+              className="w-full h-[450px] object-cover rounded-2xl"
             />
             <div className="flex flex-col py-2">
               <h1 className="text-xl font-semibold">

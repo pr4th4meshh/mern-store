@@ -10,8 +10,8 @@ interface ButtonProps {
 const ButtonComponent = ({ title, bgColor, textColor }: ButtonProps) => {
   return (
     <Button
-      type="text"
-      className={`py-6 px-12 rounded-full ${textColor} ${bgColor}`}
+      type="default"
+      className={`py-6 px-12 rounded-full mt-3 ${textColor} ${bgColor}`}
     >
       {title}
     </Button>
