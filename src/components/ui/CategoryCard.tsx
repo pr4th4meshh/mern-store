@@ -1,19 +1,11 @@
-import { ProductOutlined } from '@ant-design/icons'
-import { Avatar, Card, Skeleton } from 'antd'
+import { Card } from 'antd'
 import Meta from 'antd/es/card/Meta'
 import Image from 'next/image'
-import ProductImage from '../../../public/reinhero.webp'
+import ProductImage from '../../../public/reinwedding.webp'
 import ButtonComponent from './ButtonComponent'
 import Link from 'next/link'
 
-const CategoryCard = ({
-  productName,
-  icon,
-  createdBy,
-  createdAt,
-  loading,
-  productId,
-}: any) => {
+const CategoryCard = () => {
   return (
     <>
       <Card bodyStyle={{ padding: 0 }} className="border-none">

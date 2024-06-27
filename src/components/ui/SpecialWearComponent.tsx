@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import HeroImage from '../../../public/reinhero.webp'
+import HeroImage from '../../../public/reinwedding.webp'
 import ButtonComponent from './ButtonComponent'
 import Link from 'next/link'
 
