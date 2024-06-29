@@ -1,10 +1,12 @@
 // app/product/[productId]/page.tsx
 "use client"
 import ProductGallery from "./_components/ProductGallery"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { StarFilled } from "@ant-design/icons"
 import { Radio } from "antd"
 import ButtonComponent from "@/components/ui/ButtonComponent"
+
+export const dynamic = "force-dynamic"
 
 const product = {
   id: "productId",
@@ -24,11 +26,9 @@ const product = {
 
 const ProductDetailsPage = () => {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
-
   const onChangeSize = (e) => {
     setSelectedSize(e.target.value)
   }
-
   return (
     <div className="container mx-auto p-8">
       <div className="flex flex-col md:flex-row">
@@ -45,13 +45,6 @@ const ProductDetailsPage = () => {
           <p className="text-gray-700 mb-4">Color: {product.color}</p>
           <p className="text-2xl font-semibold mb-4">${product.price}</p>
           <div className="flex flex-wrap gap-3 mb-3">
-            {/* <Radio.Group onChange={onChangeSize} value={selectedSize}>
-              {product.sizes.map((size, index) => (
-                <Radio.Button key={index} value={size}>
-                  {size}
-                </Radio.Button>
-              ))}
-            </Radio.Group> */}
             {product.sizes.map((size, index) => (
               <>
                 <input
@@ -59,16 +52,18 @@ const ProductDetailsPage = () => {
                   value={size}
                   key={index}
                   className={`min-w-min cursor-pointer border px-4 py-1 text-lg rounded-full ${
-                    selectedSize === size
-                      ? "border-secondary"
-                      : "border-black"
+                    selectedSize === size ? "border-secondary" : "border-black"
                   } `}
                   onClick={() => setSelectedSize(size)}
                 />
               </>
             ))}
           </div>
-          <ButtonComponent title="Add to Cart" textColor="text-white" bgColor="bg-black" />
+          <ButtonComponent
+            title="Add to Cart"
+            textColor="text-white"
+            bgColor="bg-black"
+          />
         </div>
       </div>
     </div>

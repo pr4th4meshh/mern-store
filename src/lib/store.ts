@@ -5,12 +5,14 @@ import { authSlice } from "./api-slices/authApiSlice"
 import storage from "redux-persist/lib/storage"
 import { persistReducer, persistStore } from "redux-persist"
 import { userApiSlice } from "./api-slices/userApiSlice"
+import { productsApiSlice } from "./api-slices/productsApiSlice"
 
 const rootReducer = combineReducers({
   user: userReducer,
   configuration: configurationReducer,
   [authSlice.reducerPath]: authSlice.reducer,
   [userApiSlice.reducerPath]: userApiSlice.reducer,
+  [productsApiSlice.reducerPath]: productsApiSlice.reducer
 })
 
 const persistConfig = {
@@ -28,7 +30,8 @@ export const store = configureStore({
       serializableCheck: false,
     }).concat(
       authSlice.middleware,
-      userApiSlice.middleware
+      userApiSlice.middleware,
+      productsApiSlice.middleware
     ),
 })
 

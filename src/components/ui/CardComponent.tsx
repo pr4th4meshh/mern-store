@@ -1,25 +1,14 @@
-import { ProductOutlined } from '@ant-design/icons'
-import { Avatar, Card, Skeleton } from 'antd'
-import Meta from 'antd/es/card/Meta'
-import Image from 'next/image'
-import ProductImage from '../../../public/reinhero.webp'
+import { Avatar, Card, Skeleton } from "antd"
+import Image from "next/image"
+import ProductImage from "../../../public/reinhero.webp"
 
-const CardComponent = ({
-  icon,
-  loading,
-}: any) => {
+const CardComponent = ({ icon, loading, product, isLoading }: any) => {
   return (
     <>
-      {loading ? (
-        <Skeleton loading={loading} avatar active>
-          <Meta
-            avatar={<Avatar icon={<ProductOutlined /> || icon} size={50} />}
-            title="Card title"
-            description="This is the description"
-          />
-        </Skeleton>
+      {isLoading ? (
+        <Skeleton.Image style={{ height: '450px', width: '100%' }} active />
       ) : (
-        <Card bodyStyle={{padding: 0}} className='border-none'>
+        <Card bodyStyle={{ padding: 0 }} className="border-none">
           <div className="flex flex-col">
             <Image
               src={ProductImage}
@@ -31,13 +20,12 @@ const CardComponent = ({
             />
             <div className="flex flex-col py-2">
               <h1 className="text-xl font-semibold">
-                {/* {productName?.length > 10
-                  ? productName?.slice(0, 9) + '..'
-                  : productName} */}
-                Gray pants
+                {product.name.length > 30
+                  ? product.name.slice(0, 9) + ".."
+                  : product.name}
               </h1>
-              <h3 className="text-gray-400">Slim Fit Mens Pant</h3>
-              <h1 className="text-lg font-semibold">$90</h1>
+              <h3 className="text-gray-400">{product.description}</h3>
+              <h1 className="text-lg font-semibold">${product.price}</h1>
             </div>
           </div>
         </Card>
