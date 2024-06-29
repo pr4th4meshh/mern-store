@@ -8,7 +8,7 @@ const HomeComponent = () => {
       <div className="h-[90vh] p-10 flex justify-center">
         <Image
           src={HeroImage}
-          alt="sdf"
+          alt="reinheroimage"
           width="0"
           height="0"
           sizes="100vw"

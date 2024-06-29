@@ -15,6 +15,9 @@ const config: Config = {
       },
       colors: {
         secondary : "#f58d42"
+      },
+      fontFamily: {
+        sans: ['var(--font-poppins)']
       }
     },
     theme: {
