@@ -1,14 +1,16 @@
 import { Avatar, Card, Skeleton } from "antd"
 import Image from "next/image"
 import ProductImage from "../../../public/reinhero.webp"
+import Link from "next/link"
 
-const CardComponent = ({ icon, loading, product, isLoading }: any) => {
+const CardComponent = ({ icon, loading, product, isLoading, id }: any) => {
   return (
     <>
       {isLoading ? (
         <Skeleton.Image style={{ height: '450px', width: '100%' }} active />
       ) : (
-        <Card bodyStyle={{ padding: 0 }} className="border-none">
+        <Link href={`/product/${product._id}`} >
+                <Card bodyStyle={{ padding: 0 }} className="border-none">
           <div className="flex flex-col">
             <Image
               src={ProductImage}
@@ -29,6 +31,7 @@ const CardComponent = ({ icon, loading, product, isLoading }: any) => {
             </div>
           </div>
         </Card>
+        </Link>
       )}
     </>
   )

@@ -1,10 +1,9 @@
-// app/product/[productId]/page.tsx
 "use client"
 import ProductGallery from "./_components/ProductGallery"
 import React, { useEffect, useState } from "react"
 import { StarFilled } from "@ant-design/icons"
-import { Radio } from "antd"
 import ButtonComponent from "@/components/ui/ButtonComponent"
+import { useGetProductByIdQuery } from "@/lib/api-slices/productsApiSlice"
 
 export const dynamic = "force-dynamic"
 
@@ -24,8 +23,12 @@ const product = {
   ],
 }
 
-const ProductDetailsPage = () => {
+const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  const { data: productDetails, error, isLoading, refetch } = useGetProductByIdQuery(params.productId);
+  useEffect(() => {
+    refetch()
+  }, [refetch])
   const onChangeSize = (e) => {
     setSelectedSize(e.target.value)
   }
@@ -36,14 +39,16 @@ const ProductDetailsPage = () => {
           <ProductGallery images={product.images} />
         </div>
         <div className="w-full flex flex-col text-xl md:w-1/2 md:pl-10 mt-10 md:mt-10">
-          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-          <p className="text-gray-700 mb-4">{product.description}</p>
+          <h1 className="text-3xl font-bold mb-4">{productDetails?.name}</h1>
+          <p className="text-gray-700 mb-4">{productDetails?.description}</p>
           <p className="text-gray-700 mb-4">
             <StarFilled className="pr-1 text-secondary" />
             {product.rating} / 5
           </p>
           <p className="text-gray-700 mb-4">Color: {product.color}</p>
-          <p className="text-2xl font-semibold mb-4">${product.price}</p>
+          <p className="text-2xl font-semibold mb-4">
+            ${productDetails?.price}
+          </p>
           <div className="flex flex-wrap gap-3 mb-3">
             {product.sizes.map((size, index) => (
               <>
