@@ -1,11 +1,10 @@
 import { Card } from 'antd'
-import Meta from 'antd/es/card/Meta'
 import Image from 'next/image'
 import ProductImage from '../../../public/reinwedding.webp'
 import ButtonComponent from './ButtonComponent'
 import Link from 'next/link'
 
-const CategoryCard = () => {
+const CategoryCard = ({categoryName}: any) => {
   return (
     <>
       <Card bodyStyle={{ padding: 0 }} className="border-none">
@@ -20,8 +19,8 @@ const CategoryCard = () => {
           />
           <div className="w-full h-[450px] rounded-2xl bg-black absolute z-1 opacity-50"></div>
           <div className="flex flex-col py-2 absolute top-[300px] ml-10">
-            <h1 className="text-4xl text-white">MENS</h1>
-            <Link href={'/category/mens'}>
+            <h1 className="text-4xl text-white">{categoryName.toUpperCase()}</h1>
+            <Link href={`/category/${categoryName}`}>
               <ButtonComponent
                 title="See Details"
                 bgColor="bg-white"

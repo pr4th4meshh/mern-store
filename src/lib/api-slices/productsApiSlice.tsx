@@ -25,10 +25,24 @@ export const productsApiSlice = createApi({
       providesTags: ["Product"],
     }),
     getProductById: builder.query({
-        query: (id) => `/product/id/${id}`,
-        providesTags: ["Product"],
+      query: (id) => `/product/id/${id}`,
+      providesTags: ["Product"],
+    }),
+    getProductsByCategory: builder.mutation({
+      query: (categoryName) => ({
+        url: `/category/${categoryName}`,
+        method: "GET",
       }),
+    }),
+    getAllCategories: builder.query({
+      query:() => "/categories/all"
+    }),
   }),
 })
 
-export const { useGetAllProductsQuery, useGetProductByIdQuery } = productsApiSlice
+export const {
+  useGetAllProductsQuery,
+  useGetProductByIdQuery,
+  useGetProductsByCategoryMutation,
+  useGetAllCategoriesQuery,
+} = productsApiSlice
