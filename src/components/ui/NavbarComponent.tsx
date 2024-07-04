@@ -1,5 +1,5 @@
 import { Header } from 'antd/es/layout/layout'
-import { UserOutlined, ShopOutlined, HeartOutlined } from '@ant-design/icons'
+import { UserOutlined, ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import Image from 'next/image'
 import React, { useEffect } from 'react'
@@ -53,10 +53,12 @@ const NavbarComponent = () => {
 
         <div className="flex flex-1 justify-end gap-7 items-center">
           <span>
+            <Link href={"/wishlist"}>
             <HeartOutlined className=" cursor-pointer" />
+            </Link>
           </span>
           <span>
-            <ShopOutlined className=" cursor-pointer " />
+            <ShoppingCartOutlined className=" cursor-pointer " />
           </span>
           {!user ? (
             <Link href="/sign-up">
