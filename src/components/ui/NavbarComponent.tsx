@@ -1,26 +1,35 @@
-import { Header } from 'antd/es/layout/layout'
-import { UserOutlined, ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons'
-import Link from 'next/link'
-import Image from 'next/image'
-import React, { useEffect } from 'react'
-import logo from '../../../public/REINlight.svg'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectCurrentUser } from '@/lib/slices/userSlice'
-import ProfileComponent from './ProfileComponent'
-import { toggleDrawer } from '@/lib/slices/configurationSlice'
-import { DRAWER_STATE } from '@/common/states'
-import { useGetUserDetailsQuery } from '@/lib/api-slices/userApiSlice'
+import { Header } from "antd/es/layout/layout"
+import {
+  UserOutlined,
+  ShoppingCartOutlined,
+  HeartOutlined,
+} from "@ant-design/icons"
+import Link from "next/link"
+import Image from "next/image"
+import React, { useEffect } from "react"
+import logo from "../../../public/REINlight.svg"
+import { useDispatch, useSelector } from "react-redux"
+import { selectCurrentUser } from "@/lib/slices/userSlice"
+import ProfileComponent from "./ProfileComponent"
+import { toggleDrawer } from "@/lib/slices/configurationSlice"
+import { DRAWER_STATE } from "@/common/states"
+import { useGetUserDetailsQuery } from "@/lib/api-slices/userApiSlice"
+import { Badge } from "antd"
 
 const NAV_LINKS = [
-  { label: 'home', key: '/' },
-  { label: 'mens', key: '/mens' },
-  { label: 'women', key: `/women` },
-  { label: 'kids', key: `/kids` },
-  { label: 'featured', key: `/featured` },
+  { label: "home", key: "/" },
+  { label: "mens", key: "/mens" },
+  { label: "women", key: `/women` },
+  { label: "kids", key: `/kids` },
+  { label: "featured", key: `/featured` },
 ]
 
 const NavbarComponent = () => {
   const user = useSelector(selectCurrentUser)
+  const wishlistedItems = useSelector(
+    (state) => state.wishlistedItems.wishlistedItems,
+  )
+  const cartItems = useSelector((state) => state.cart.cart)
   const { refetch } = useGetUserDetailsQuery(undefined)
   const dispatch = useDispatch()
 
@@ -43,22 +52,38 @@ const NavbarComponent = () => {
           ))}
         </div>
 
-        <Image
-          src={logo}
-          height={120}
-          width={150}
-          quality={100}
-          alt="reinventory"
-        />
+        <Link href="/">
+          <Image
+            src={logo}
+            height={120}
+            width={150}
+            quality={100}
+            alt="reinventory"
+          />
+        </Link>
 
         <div className="flex flex-1 justify-end gap-7 items-center">
           <span>
             <Link href={"/wishlist"}>
-            <HeartOutlined className=" cursor-pointer" />
+              <Badge
+                size="small"
+                color="orange"
+                count={wishlistedItems.length || null}
+              >
+                <HeartOutlined className=" cursor-pointer text-xl" />
+              </Badge>
             </Link>
           </span>
           <span>
-            <ShoppingCartOutlined className=" cursor-pointer " />
+            <Link href={"/cart"}>
+              <Badge
+                size="small"
+                color="orange"
+                count={cartItems.length || null}
+              >
+                <ShoppingCartOutlined className=" cursor-pointer text-xl" />
+              </Badge>
+            </Link>
           </span>
           {!user ? (
             <Link href="/sign-up">
@@ -72,7 +97,7 @@ const NavbarComponent = () => {
                 onClick={() =>
                   dispatch(toggleDrawer(DRAWER_STATE.OPEN_DRAWER_STATE))
                 }
-                className=" cursor-pointer "
+                className=" cursor-pointer text-xl"
               />
             </span>
           )}

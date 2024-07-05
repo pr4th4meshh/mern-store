@@ -11,6 +11,11 @@ import { useGetProductByIdQuery } from "@/lib/api-slices/productsApiSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { addItemToWishlist } from "@/lib/slices/wishlistSlice"
 import { message } from "antd"
+import {
+  addItemsToCart,
+  deleteItemFromCart,
+  removeItemsFromCart,
+} from "@/lib/slices/cartSlice"
 
 export const dynamic = "force-dynamic"
 
@@ -42,9 +47,16 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
   const wishlistedItems = useSelector(
     (state) => state.wishlistedItems.wishlistedItems,
   )
+  const cart = useSelector((state) => state.cart.cart)
   useEffect(() => {
     refetch()
   }, [refetch])
+
+  useEffect(() => {
+    if (productDetails) {
+      setSelectedSize(productDetails.sizes[0])
+    }
+  }, [productDetails])
 
   const isItemInWishlist = wishlistedItems.some(
     (item) => item._id === productDetails?._id,
@@ -56,7 +68,25 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
     } else {
       const productWithSelectedSize = { ...productDetails, selectedSize }
       dispatch(addItemToWishlist({ item: productWithSelectedSize }))
-      message.success("Item added to wishlited items!")
+      message.success(
+        `Item of size (${selectedSize.toUpperCase()}) added to wishlited items!`,
+      )
+    }
+  }
+
+  const handleAddToCart = () => {
+    const isItemInCart = cart.some(
+      (item) =>
+        item._id === productDetails._id && item.selectedSize === selectedSize,
+    )
+    if (isItemInCart) {
+      message.info("Item is already added to the Cart!")
+    } else {
+      const productToBeAdded = { ...productDetails, selectedSize }
+      dispatch(addItemsToCart({ item: productToBeAdded, quantity: 1 }))
+      message.success(
+        `Item of size (${selectedSize.toUpperCase()}) added to the Cart!`,
+      )
     }
   }
 
@@ -111,6 +141,7 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
             textColor="text-white"
             bgColor="bg-black"
             icon={<ShoppingCartOutlined />}
+            onClick={handleAddToCart}
           />
         </div>
       </div>

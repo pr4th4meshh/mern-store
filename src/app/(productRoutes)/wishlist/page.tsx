@@ -48,7 +48,7 @@ const Wishlist = () => {
         renderItem={(item: any) => (
           <List.Item
             key={item.title}
-            className=" border-x border-gray-400 rounded-lg shadow-md"
+            className="border-gray-400 rounded-lg shadow-lg my-4"
             extra={
               <Link href={`/product/${item._id}`}>
                 <Image
