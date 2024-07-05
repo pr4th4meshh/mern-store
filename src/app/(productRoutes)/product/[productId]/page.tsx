@@ -11,9 +11,7 @@ import { useGetProductByIdQuery } from "@/lib/api-slices/productsApiSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { addItemToWishlist } from "@/lib/slices/wishlistSlice"
 import { message } from "antd"
-import {
-  addItemsToCart,
-} from "@/lib/slices/cartSlice"
+import { addItemsToCart } from "@/lib/slices/cartSlice"
 
 export const dynamic = "force-dynamic"
 
@@ -46,6 +44,8 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
     (state) => state.wishlistedItems.wishlistedItems,
   )
   const cart = useSelector((state) => state.cart.cart)
+  const user = useSelector((state) => state.user.currentUser)
+
   useEffect(() => {
     refetch()
   }, [refetch])
@@ -61,7 +61,9 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
   )
 
   const handleAddToWishlisted = () => {
-    if (isItemInWishlist) {
+    if (!user) {
+      message.warning("You need to login/register to perform this action!")
+    } else if (isItemInWishlist) {
       message.info("Item is already added in the Wishlist!")
     } else {
       const productWithSelectedSize = { ...productDetails, selectedSize }
@@ -77,7 +79,10 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
       (item) =>
         item._id === productDetails._id && item.selectedSize === selectedSize,
     )
-    if (isItemInCart) {
+
+    if (!user) {
+      message.warning("You need to login/register to perform this action!")
+    } else if (isItemInCart) {
       message.info("Item is already added to the Cart!")
     } else {
       const productToBeAdded = { ...productDetails, selectedSize }

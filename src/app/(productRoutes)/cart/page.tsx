@@ -39,12 +39,11 @@ const Cart = () => {
     return (
       <div className="h-[80vh] flex justify-center items-center flex-col">
         <SearchOutlined className="text-6xl mb-5 text-secondary" />
-        <h1 className="text-3xl">You don't have any items wishlisted yet</h1>
+        <h1 className="text-3xl">Your Cart is empty</h1>
       </div>
     )
   }
 
-  console.log(cartItems)
   return (
     <div className="container mx-auto max-w-6xl p-10">
       <h1 className="text-4xl uppercase font-semibold text-center mb-8">

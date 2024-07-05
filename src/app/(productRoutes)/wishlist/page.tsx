@@ -39,10 +39,8 @@ const Wishlist = () => {
         itemLayout="vertical"
         size="large"
         pagination={{
-          onChange: (page) => {
-            console.log(page)
-          },
           pageSize: 5,
+          hideOnSinglePage: true
         }}
         locale={{ emptyText: "You don't have any items wishlisted yet" }}
         dataSource={wishlistedItems}

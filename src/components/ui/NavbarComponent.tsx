@@ -63,28 +63,33 @@ const NavbarComponent = () => {
         </Link>
 
         <div className="flex flex-1 justify-end gap-7 items-center">
-          <span>
-            <Link href={"/wishlist"}>
-              <Badge
-                size="small"
-                color="orange"
-                count={wishlistedItems.length || null}
-              >
-                <HeartOutlined className=" cursor-pointer text-xl" />
-              </Badge>
-            </Link>
-          </span>
-          <span>
-            <Link href={"/cart"}>
-              <Badge
-                size="small"
-                color="orange"
-                count={cartItems.length || null}
-              >
-                <ShoppingCartOutlined className=" cursor-pointer text-xl" />
-              </Badge>
-            </Link>
-          </span>
+          {user && (
+            <>
+              {" "}
+              <span>
+                <Link href={"/wishlist"}>
+                  <Badge
+                    size="small"
+                    color="orange"
+                    count={wishlistedItems.length || null}
+                  >
+                    <HeartOutlined className=" cursor-pointer text-xl" />
+                  </Badge>
+                </Link>
+              </span>
+              <span>
+                <Link href={"/cart"}>
+                  <Badge
+                    size="small"
+                    color="orange"
+                    count={cartItems.length || null}
+                  >
+                    <ShoppingCartOutlined className=" cursor-pointer text-xl" />
+                  </Badge>
+                </Link>
+              </span>{" "}
+            </>
+          )}
           {!user ? (
             <Link href="/sign-up">
               <span className="font-normal bg-secondary text-white p-2 rounded-md">
