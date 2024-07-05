@@ -13,8 +13,6 @@ import { addItemToWishlist } from "@/lib/slices/wishlistSlice"
 import { message } from "antd"
 import {
   addItemsToCart,
-  deleteItemFromCart,
-  removeItemsFromCart,
 } from "@/lib/slices/cartSlice"
 
 export const dynamic = "force-dynamic"
