@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import userReducer from "@/lib/slices/userSlice"
 import wishlistedReducer from "@/lib/slices/wishlistSlice"
+import cartReducer from "@/lib/slices/cartSlice"
 import configurationReducer from "@/lib/slices/configurationSlice"
 import { authSlice } from "./api-slices/authApiSlice"
 import storage from "redux-persist/lib/storage"
@@ -11,6 +12,7 @@ import { productsApiSlice } from "./api-slices/productsApiSlice"
 const rootReducer = combineReducers({
   user: userReducer,
   wishlistedItems: wishlistedReducer,
+  cart: cartReducer,
   configuration: configurationReducer,
   [authSlice.reducerPath]: authSlice.reducer,
   [userApiSlice.reducerPath]: userApiSlice.reducer,
