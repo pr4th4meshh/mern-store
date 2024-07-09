@@ -5,6 +5,7 @@ import { useSigninMutation } from "../../../lib/api-slices/authApiSlice"
 import { useDispatch } from "react-redux"
 import { setUser } from "../../../lib/slices/userSlice"
 import { useRouter } from "next/navigation"
+import OAuth from "@/app/OAuth"
 
 const SignIn = () => {
   const [form] = Form.useForm()
@@ -69,6 +70,7 @@ const SignIn = () => {
               Login
             </Button>
           </Form.Item>
+          <OAuth />
         </Form>
       </div>
     </div>

@@ -14,7 +14,7 @@ import ProfileComponent from "./ProfileComponent"
 import { toggleDrawer } from "@/lib/slices/configurationSlice"
 import { DRAWER_STATE } from "@/common/states"
 import { useGetUserDetailsQuery } from "@/lib/api-slices/userApiSlice"
-import { Badge } from "antd"
+import { Avatar, Badge } from "antd"
 
 const NAV_LINKS = [
   { label: "home", key: "/" },
@@ -36,12 +36,14 @@ const NavbarComponent = () => {
   useEffect(() => {
     refetch()
   }, [refetch])
+  console.log(user)
   return (
     <>
       <ProfileComponent
         userName={user?.username}
         userEmail={user?.email}
         userID={user?._id}
+        userPhoto={user?.avatar}
       />
       <Header className="hidden md:flex items-center py-12 bg-white text-lg font-semibold border-b">
         <div className="flex flex-1">
@@ -98,7 +100,8 @@ const NavbarComponent = () => {
             </Link>
           ) : (
             <span>
-              <UserOutlined
+              <Avatar
+              src={user.avatar}
                 onClick={() =>
                   dispatch(toggleDrawer(DRAWER_STATE.OPEN_DRAWER_STATE))
                 }

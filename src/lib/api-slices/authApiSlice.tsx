@@ -45,6 +45,13 @@ export const authSlice = createApi({
         method: "POST",
       }),
     }),
+    googleSignIn: builder.mutation({
+      query: (user) => ({
+        url: '/google',
+        method: 'POST',
+        body: user,
+      }),
+    }),
   }),
 })
 
@@ -52,4 +59,5 @@ export const {
   useSignupMutation,
   useSigninMutation,
   useSignoutMutation,
+  useGoogleSignInMutation
 } = authSlice

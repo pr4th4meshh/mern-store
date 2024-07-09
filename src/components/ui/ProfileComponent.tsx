@@ -16,9 +16,11 @@ import {
 } from '@/lib/api-slices/userApiSlice'
 import DrawerComponent from './DrawerComponent'
 import ButtonComponent from './ButtonComponent'
+import Pfp from "../../../public/reinwedding.webp"
+import Image from 'next/image'
 
 
-const ProfileDrawer = ({ userName, userEmail, userID }: any) => {
+const ProfileDrawer = ({ userName, userEmail, userPhoto, userID }: any) => {
   const [form] = useForm()
   const dispatch = useDispatch()
   const Configuration = useSelector(selectConfiguration)
@@ -79,7 +81,7 @@ const ProfileDrawer = ({ userName, userEmail, userID }: any) => {
           </div>
 
           <div className="flex flex-col items-center">
-            <Avatar size={100} icon={<UserOutlined />} />
+            <Avatar alt="pfp image" size={100} src={userPhoto} />
             <h1 className="text-2xl font-semibold mt-4">{userName}</h1>
             <p className="text-gray-600 mb-1">
               <MailOutlined /> {userEmail}
