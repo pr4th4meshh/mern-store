@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { setUser } from "@/lib/slices/userSlice"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import OAuth from "@/app/OAuth"
 
 const Register = () => {
   const [form] = Form.useForm()
@@ -71,6 +72,7 @@ const Register = () => {
             >
               Register
             </Button>
+            <OAuth />
           </Form.Item>
           <span className="flex justify-center">
             Already have an account?{" "}

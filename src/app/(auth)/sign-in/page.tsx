@@ -22,7 +22,7 @@ const SignIn = () => {
       router.push("/")
     } catch (error) {
       message.error(
-        error?.data?.message || "Invalid Credentials, please try again"
+        error?.data?.message || "Invalid Credentials, please try again",
       )
     }
   }
@@ -69,8 +69,8 @@ const SignIn = () => {
             >
               Login
             </Button>
+            <OAuth />
           </Form.Item>
-          <OAuth />
         </Form>
       </div>
     </div>
