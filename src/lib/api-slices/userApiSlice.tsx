@@ -5,7 +5,7 @@ import { setUser } from '../slices/userSlice' // Import actions from userSlice
 export const userApiSlice = createApi({
   reducerPath: 'clientSlice',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api/auth/client',
+    baseUrl: process.env.NEXT_PUBLIC_USER_API_SLICE_KEY,
     credentials: 'include',
     prepareHeaders: (headers, { getState }: any) => {
       const token = getState().user.token
