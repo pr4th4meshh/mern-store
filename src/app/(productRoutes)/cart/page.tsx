@@ -9,6 +9,7 @@ import {
   removeItemsFromCart,
 } from "@/lib/slices/cartSlice"
 import ListItemComponent from "@/components/ui/ListItemCompo"
+import BillComponent from "@/components/ui/BillComponent"
 
 export const dynamic = "force-dynamic"
 
@@ -16,8 +17,8 @@ const Cart = () => {
   const dispatch = useDispatch()
   const cartItems = useSelector((state) => state.cart.cart)
 
-  const handleDeleteItemFromCart = (selectedSize: string) => {
-    dispatch(deleteItemFromCart(selectedSize))
+  const handleDeleteItemFromCart = (id,selectedSize: string) => {
+    dispatch(deleteItemFromCart({id, selectedSize}))
     message.info("Item removed from Cart!")
   }
 
@@ -49,7 +50,9 @@ const Cart = () => {
       <h1 className="text-4xl uppercase font-semibold text-center mb-8">
         Your Cart:
       </h1>
+      <div className="flex flex-row justify-evenly">
       <List
+       className="w-full mx-8"
         itemLayout="vertical"
         size="large"
         pagination={{
@@ -68,10 +71,12 @@ const Cart = () => {
             handleRemoveQuantity={() =>
               handleRemoveItemFromCart(item, item.selectedSize)
             }
-            handleDeleteItem={() => handleDeleteItemFromCart(item.selectedSize)}
+            handleDeleteItem={() => handleDeleteItemFromCart(item._id, item.selectedSize)}
           />
         )}
       />
+      <BillComponent />
+      </div>
     </div>
   )
 }

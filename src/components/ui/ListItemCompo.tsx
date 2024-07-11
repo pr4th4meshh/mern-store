@@ -9,7 +9,7 @@ interface ListItemComponentProps {
   showQuantityCounter?: boolean
   handleRemoveQuantity?: () => void
   handleAddQuantity?: () => void
-  handleDeleteItem: () => void
+  handleDeleteItem?: () => void
 }
 
 const ListItemComponent = ({
@@ -19,9 +19,10 @@ const ListItemComponent = ({
   handleAddQuantity,
   handleDeleteItem,
 }: ListItemComponentProps) => {
+  if(!item) return <h1>404 return to home</h1>
   return (
     <List.Item
-      key={item.title}
+      key={item?.title}
       className="border-gray-400 rounded-lg shadow-lg my-4"
       extra={
         <Link href={`/product/${item._id}`}>
@@ -37,10 +38,10 @@ const ListItemComponent = ({
     >
       <div className="flex flex-col">
         <h1 className="text-xl font-semibold mb-2">
-          {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+          {item?.name?.charAt(0).toUpperCase() + item.name?.slice(1)}
         </h1>
         <span className=" text-gray-500 mb-1">
-          {truncateDescription(item.description)}
+          {truncateDescription(item?.description)}
         </span>
         <p>
           Size:{" "}
@@ -60,11 +61,11 @@ const ListItemComponent = ({
                 onClick={handleRemoveQuantity}
                 type="default"
                 className="bg-secondary text-white text-lg w-min mt-2"
-                disabled={item.quantity <= 1}
+                disabled={item?.quantity <= 1}
               >
                 -
               </Button>
-              <span className="text-lg px-3">{item.quantity}</span>
+              <span className="text-lg px-3">{item?.quantity}</span>
               <Button
                 onClick={handleAddQuantity}
                 type="default"
