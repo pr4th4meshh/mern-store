@@ -46,10 +46,12 @@ const cartSlice = createSlice({
         }
       },
   
-    deleteItemFromCart: (state, action) => {
-      const selectedSize = action.payload
-      state.cart = state.cart.filter((item) => item.selectedSize !== selectedSize)
-    },
+      deleteItemFromCart: (state, action) => {
+        const { id, selectedSize } = action.payload;
+        state.cart = state.cart.filter(
+          (item) => !(item._id === id && item.selectedSize === selectedSize)
+        );
+      },
   },
 })
 
