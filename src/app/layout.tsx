@@ -1,22 +1,23 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import MainLayout from '@/components/layouts/MainLayout'
-import StoreProvider from './StoreProvider'
+import type { Metadata } from "next"
+import "./globals.css"
+import MainLayout from "@/components/layouts/MainLayout"
+import StoreProvider from "./StoreProvider"
 import localFont from "next/font/local"
+import StripeElmnts from "./Elmts"
 
 const poppins = localFont({
   src: [
     {
       path: "../../public/fonts/Poppins-Regular.ttf",
-      weight: '400'
-    }
+      weight: "400",
+    },
   ],
-  variable: '--font-poppins'
+  variable: "--font-poppins",
 })
 
 export const metadata: Metadata = {
-  title: 'RE-IN',
-  description: 'Developed by @pr4th4meshh on GitHub',
+  title: "RE-IN",
+  description: "Developed by @pr4th4meshh on GitHub",
 }
 
 export default function RootLayout({
@@ -28,9 +29,9 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable} font-sans`}>
       <body>
         <StoreProvider>
-          <MainLayout>
-            {children}
-            </MainLayout>
+          <StripeElmnts>
+            <MainLayout>{children}</MainLayout>
+          </StripeElmnts>
         </StoreProvider>
       </body>
     </html>

@@ -16,6 +16,8 @@ const CategoryPage = ({ params }: { params: { categoryName: string } }) => {
   useEffect(() => {
     setFilteredProducts(productsByCategory);
   }, [productsByCategory]);
+  
+  if(!filteredProducts) return;
 
   const handleFilterChange = (filterKey) => {
     let sortedProducts = [...productsByCategory];

@@ -97,7 +97,7 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
     <div className="container mx-auto p-8">
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-1/2">
-          <ProductGallery images={product.images} />
+          <ProductGallery apiImages={productDetails?.productImages} images={product.images} />
         </div>
         <div className="w-full flex flex-col text-xl md:w-1/2 md:pl-10 mt-10 md:mt-10">
           <h1 className="text-3xl font-bold mb-4">{productDetails?.name}</h1>

@@ -4,11 +4,12 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 interface ProductGalleryProps {
-  images: string[];
+  images: string[]
+  apiImages: string[]
 }
 
-const ProductGallery: React.FC<ProductGalleryProps> = ({ images }) => {
-  const [mainImage, setMainImage] = useState(images[0]);
+const ProductGallery: React.FC<ProductGalleryProps> = ({ images, apiImages }) => {
+  const [mainImage, setMainImage] = useState(apiImages ?  apiImages[0] : images[0]);
 
   return (
     <div className="flex flex-col items-center">
@@ -16,13 +17,13 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ images }) => {
         <Image
           src={mainImage}
           alt="Main Product Image"
-          width={600}
-          height={600}
-          className="object-cover rounded-xl"
+          width={800}
+          height={800}
+          className="object-cover rounded-xl w-full h-[500px]"
         />
       </div>
       <div className="flex gap-2">
-        {images.map((image, index) => (
+        { apiImages?.map((image, index) => (
           <div
             key={index}
             className={`cursor-pointer border ${
@@ -35,10 +36,10 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ images }) => {
               alt={`Product Image ${index + 1}`}
               width={100}
               height={100}
-              className="object-cover"
+              className="object-cover h-[100px] w-[100px]"
             />
           </div>
-        ))}
+        )) }
       </div>
     </div>
   );

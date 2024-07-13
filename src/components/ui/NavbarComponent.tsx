@@ -18,10 +18,10 @@ import { Avatar, Badge } from "antd"
 
 const NAV_LINKS = [
   { label: "home", key: "/" },
-  { label: "mens", key: "/mens" },
-  { label: "women", key: `/women` },
-  { label: "kids", key: `/kids` },
-  { label: "featured", key: `/featured` },
+  { label: "mens", key: "/category/mens" },
+  { label: "women", key: `/category/women` },
+  { label: "kids", key: `/category/kids` },
+  { label: "featured", key: `/category/featured` },
 ]
 
 const NavbarComponent = () => {

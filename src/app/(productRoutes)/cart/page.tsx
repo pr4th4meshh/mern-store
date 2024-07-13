@@ -10,8 +10,18 @@ import {
 } from "@/lib/slices/cartSlice"
 import ListItemComponent from "@/components/ui/ListItemCompo"
 import BillComponent from "@/components/ui/BillComponent"
+import { Elements } from "@stripe/react-stripe-js"
+import Checkout from "../checkout/page"
+import { getCheckoutPriceToPay } from "@/common/utils"
+import { loadStripe } from "@stripe/stripe-js"
 
 export const dynamic = "force-dynamic"
+if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+  throw new Error(
+    "process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY isn't defined",
+  )
+}
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 const Cart = () => {
   const dispatch = useDispatch()
@@ -44,6 +54,9 @@ const Cart = () => {
       </div>
     )
   }
+  const items = useSelector((state)=> state.cart.cart)
+  const CHECKOUT_PRICE_TO_PAY = getCheckoutPriceToPay(items)
+
 
   return (
     <div className="container mx-auto max-w-6xl p-10">
@@ -76,6 +89,13 @@ const Cart = () => {
         )}
       />
       <BillComponent />
+      {/* <Elements stripe={stripePromise} options={{
+        mode: "payment",
+        amount: CHECKOUT_PRICE_TO_PAY,
+        currency: "inr",
+      }}>
+        <Checkout amount={CHECKOUT_PRICE_TO_PAY} />
+      </Elements> */}
       </div>
     </div>
   )

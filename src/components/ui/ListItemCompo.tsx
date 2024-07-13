@@ -20,6 +20,7 @@ const ListItemComponent = ({
   handleDeleteItem,
 }: ListItemComponentProps) => {
   if(!item) return <h1>404 return to home</h1>
+  console.log(item)
   return (
     <List.Item
       key={item?.title}
@@ -31,7 +32,7 @@ const ListItemComponent = ({
             height={200}
             className="object-cover rounded-xl w-[150px] h-[150px]"
             alt={item.name}
-            src="https://via.placeholder.com/300x300/ff0000"
+            src={item.productImages[0] || "https://via.placeholder.com/300x300/ff0000"}
           />
         </Link>
       }

@@ -4,6 +4,9 @@ import ProductImage from "../../../public/reinhero.webp"
 import Link from "next/link"
 
 const CardComponent = ({ icon, loading, product, isLoading, id }: any) => {
+  if (!product) {
+    throw new Error("product not defined")
+  }
   return (
     <>
       {isLoading ? (
@@ -13,7 +16,7 @@ const CardComponent = ({ icon, loading, product, isLoading, id }: any) => {
           <Card styles={{ body: { padding: 0 } }} className="border-none">
             <div className="flex flex-col">
               <Image
-                src={ProductImage}
+                src={product?.productImages[0] || ProductImage}
                 alt="product image"
                 height="0"
                 width="0"
