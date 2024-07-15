@@ -3,7 +3,6 @@ import "./globals.css"
 import MainLayout from "@/components/layouts/MainLayout"
 import StoreProvider from "./StoreProvider"
 import localFont from "next/font/local"
-import StripeElmnts from "./Elmts"
 
 const poppins = localFont({
   src: [
@@ -29,9 +28,7 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable} font-sans`}>
       <body>
         <StoreProvider>
-          <StripeElmnts>
-            <MainLayout>{children}</MainLayout>
-          </StripeElmnts>
+          <MainLayout>{children}</MainLayout>
         </StoreProvider>
       </body>
     </html>

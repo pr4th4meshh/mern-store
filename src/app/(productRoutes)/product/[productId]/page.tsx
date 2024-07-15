@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addItemToWishlist } from "@/lib/slices/wishlistSlice"
 import { message } from "antd"
 import { addItemsToCart } from "@/lib/slices/cartSlice"
+import StarRating from "@/components/ui/StarRatings"
 
 export const dynamic = "force-dynamic"
 
@@ -97,15 +98,17 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
     <div className="container mx-auto p-8">
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-1/2">
-          <ProductGallery apiImages={productDetails?.productImages} images={product.images} />
+          <ProductGallery
+            apiImages={productDetails?.productImages}
+            images={product.images}
+          />
         </div>
         <div className="w-full flex flex-col text-xl md:w-1/2 md:pl-10 mt-10 md:mt-10">
           <h1 className="text-3xl font-bold mb-4">{productDetails?.name}</h1>
           <p className="text-gray-700 mb-4">{productDetails?.description}</p>
           <span>Ratings:</span>
           <p className="text-gray-700 mb-4">
-            <StarFilled className="pr-1 text-secondary" />
-            {product.rating} / 5
+            <StarRating productId={productDetails?._id} />
           </p>
           <span>Color:</span>
           <p className="text-gray-700 mb-4 font-semibold">{product.color}</p>

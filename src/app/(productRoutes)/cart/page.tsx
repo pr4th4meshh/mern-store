@@ -10,8 +10,6 @@ import {
 } from "@/lib/slices/cartSlice"
 import ListItemComponent from "@/components/ui/ListItemCompo"
 import BillComponent from "@/components/ui/BillComponent"
-import { Elements } from "@stripe/react-stripe-js"
-import Checkout from "../checkout/page"
 import { getCheckoutPriceToPay } from "@/common/utils"
 import { loadStripe } from "@stripe/stripe-js"
 
@@ -27,8 +25,8 @@ const Cart = () => {
   const dispatch = useDispatch()
   const cartItems = useSelector((state) => state.cart.cart)
 
-  const handleDeleteItemFromCart = (id,selectedSize: string) => {
-    dispatch(deleteItemFromCart({id, selectedSize}))
+  const handleDeleteItemFromCart = (id, selectedSize: string) => {
+    dispatch(deleteItemFromCart({ id, selectedSize }))
     message.info("Item removed from Cart!")
   }
 
@@ -54,9 +52,9 @@ const Cart = () => {
       </div>
     )
   }
-  const items = useSelector((state)=> state.cart.cart)
-  const CHECKOUT_PRICE_TO_PAY = getCheckoutPriceToPay(items)
 
+  const items = useSelector((state) => state.cart.cart)
+  const CHECKOUT_PRICE_TO_PAY = getCheckoutPriceToPay(items)
 
   return (
     <div className="container mx-auto max-w-6xl p-10">
@@ -64,38 +62,33 @@ const Cart = () => {
         Your Cart:
       </h1>
       <div className="flex flex-row justify-evenly">
-      <List
-       className="w-full mx-8"
-        itemLayout="vertical"
-        size="large"
-        pagination={{
-          pageSize: 5,
-          hideOnSinglePage: true,
-        }}
-        locale={{ emptyText: "You don't have any items wishlisted yet" }}
-        dataSource={cartItems}
-        renderItem={(item: any) => (
-          <ListItemComponent
-            item={item}
-            showQuantityCounter={true}
-            handleAddQuantity={() =>
-              handleAddItemToCart(item, item.selectedSize)
-            }
-            handleRemoveQuantity={() =>
-              handleRemoveItemFromCart(item, item.selectedSize)
-            }
-            handleDeleteItem={() => handleDeleteItemFromCart(item._id, item.selectedSize)}
-          />
-        )}
-      />
-      <BillComponent />
-      {/* <Elements stripe={stripePromise} options={{
-        mode: "payment",
-        amount: CHECKOUT_PRICE_TO_PAY,
-        currency: "inr",
-      }}>
-        <Checkout amount={CHECKOUT_PRICE_TO_PAY} />
-      </Elements> */}
+        <List
+          className="w-full mx-8"
+          itemLayout="vertical"
+          size="large"
+          pagination={{
+            pageSize: 5,
+            hideOnSinglePage: true,
+          }}
+          locale={{ emptyText: "You don't have any items wishlisted yet" }}
+          dataSource={cartItems}
+          renderItem={(item: any) => (
+            <ListItemComponent
+              item={item}
+              showQuantityCounter={true}
+              handleAddQuantity={() =>
+                handleAddItemToCart(item, item.selectedSize)
+              }
+              handleRemoveQuantity={() =>
+                handleRemoveItemFromCart(item, item.selectedSize)
+              }
+              handleDeleteItem={() =>
+                handleDeleteItemFromCart(item._id, item.selectedSize)
+              }
+            />
+          )}
+        />
+        <BillComponent />
       </div>
     </div>
   )

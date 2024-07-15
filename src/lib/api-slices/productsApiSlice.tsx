@@ -29,10 +29,20 @@ export const productsApiSlice = createApi({
       providesTags: ["Product"],
     }),
     getProductsByCategory: builder.query({
-      query: (categoryName) => `/category/${categoryName}`
+      query: (categoryName) => `/category/${categoryName}`,
     }),
     getAllCategories: builder.query({
-      query:() => "/categories/all"
+      query: () => "/categories/all",
+    }),
+    addRating: builder.mutation({
+      query: ({ id, rating, user }) => ({
+        url: `/${id}/addRatings`,
+        method: "POST",
+        body: { rating, user },
+      }),
+    }),
+    getRatings: builder.query({
+      query: (id) => `/${id}/ratings`,
     }),
   }),
 })
@@ -42,4 +52,6 @@ export const {
   useGetProductByIdQuery,
   useGetProductsByCategoryQuery,
   useGetAllCategoriesQuery,
+  useAddRatingMutation,
+  useGetRatingsQuery
 } = productsApiSlice
