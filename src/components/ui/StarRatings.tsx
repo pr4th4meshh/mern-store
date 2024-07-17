@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { Rate, message } from "antd"
-import { StarFilled } from "@ant-design/icons"
 import {
   useAddRatingMutation,
   useGetProductByIdQuery,
@@ -51,7 +50,6 @@ const StarRating = ({ productId }: any) => {
     setRating(value)
     try {
       await addRating({ id: productId, rating: value, user: user._id }).unwrap()
-      message.success("Rating submitted successfully!")
       refetch()
     } catch (error) {
       console.error("Error submitting rating:", error)
@@ -66,11 +64,11 @@ const StarRating = ({ productId }: any) => {
   return (
     <div>
       <h2>
-        <StarFilled className="text-secondary pr-1" />
-        {averageRating.toFixed(1)} / 5
+        Public Ratings ({ratingsData.length}) : <br />
+        <Rate className="text-secondary" allowHalf value={averageRating} />
       </h2>
       You rate this product: <br />{" "}
-      <Rate value={rating} onChange={handleChange} />
+      <Rate className="text-secondary" allowClear value={rating} onChange={handleChange} />
     </div>
   )
 }

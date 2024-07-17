@@ -1,6 +1,5 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import ButtonComponent from "./ButtonComponent"
 import { Button } from "antd"
 import { loadStripe } from "@stripe/stripe-js"
 import {
@@ -9,8 +8,6 @@ import {
   GST_PERCENTAGE,
 } from "../../common/utils"
 import Link from "next/link"
-import { Elements } from "@stripe/react-stripe-js"
-import Checkout from "@/app/(productRoutes)/checkout/page"
 
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
   throw new Error(
@@ -19,7 +16,7 @@ if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
 }
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
-const BillComponent = () => {
+const BillComponent = ({ showButton }: any) => {
   const items = useSelector((state) => state.cart.cart)
   const getItemQuantity = (itemID) => {
     const item = items.find((item) => item._id === itemID)
@@ -34,7 +31,7 @@ const BillComponent = () => {
     return total + item.price * item.quantity
   }, 0)
 
-    const CHECKOUT_PRICE_TO_PAY = calculateTotalPrice(
+  const CHECKOUT_PRICE_TO_PAY = calculateTotalPrice(
     totalPriceToCheckout,
     GST_PERCENTAGE,
   )
@@ -71,11 +68,13 @@ const BillComponent = () => {
         Order Total: &#8377;
         {CHECKOUT_PRICE_TO_PAY}
       </span>
-      <Link href={"/checkout"}>
-        <Button className="p-6 my-4 rounded-full w-full bg-secondary text-white uppercase text-lg">
-          Checkout
-        </Button>
-      </Link>
+      {showButton && (
+        <Link href={"/checkout"}>
+          <Button className="p-6 my-4 rounded-full w-full bg-secondary text-white uppercase text-lg">
+            Checkout
+          </Button>
+        </Link>
+      )}
     </div>
   )
 }

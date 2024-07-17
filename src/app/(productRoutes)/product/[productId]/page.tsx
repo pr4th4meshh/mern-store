@@ -104,9 +104,14 @@ const ProductDetailsPage = ({ params }: { params: { productId: string } }) => {
           />
         </div>
         <div className="w-full flex flex-col text-xl md:w-1/2 md:pl-10 mt-10 md:mt-10">
-          <h1 className="text-3xl font-bold mb-4">{productDetails?.name}</h1>
-          <p className="text-gray-700 mb-4">{productDetails?.description}</p>
-          <span>Ratings:</span>
+          <h1 className="text-3xl font-bold mb-4">
+            {productDetails?.name.charAt(0).toUpperCase() +
+              productDetails?.name.slice(1)}
+          </h1>
+          <p className="text-gray-700 mb-4">
+            {productDetails?.description.charAt(0).toUpperCase() +
+              productDetails?.description.slice(1)}
+          </p>
           <p className="text-gray-700 mb-4">
             <StarRating productId={productDetails?._id} />
           </p>

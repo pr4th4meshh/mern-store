@@ -1,5 +1,5 @@
-import { Button } from 'antd'
-import React from 'react'
+import { Button } from "antd"
+import React from "react"
 
 interface ButtonProps {
   title: string
@@ -9,6 +9,7 @@ interface ButtonProps {
   onClick?: () => void
   icon?: any
   disableIfExists?: boolean
+  htmlType?: any
 }
 
 const ButtonComponent = ({
@@ -18,10 +19,12 @@ const ButtonComponent = ({
   onClick,
   isLoading,
   icon,
-  disableIfExists
+  htmlType,
+  disableIfExists,
 }: ButtonProps) => {
   return (
     <Button
+      htmlType={htmlType}
       onClick={onClick}
       type="default"
       loading={isLoading}

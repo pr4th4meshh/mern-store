@@ -8,6 +8,7 @@ import storage from "redux-persist/lib/storage"
 import { persistReducer, persistStore } from "redux-persist"
 import { userApiSlice } from "./api-slices/userApiSlice"
 import { productsApiSlice } from "./api-slices/productsApiSlice"
+import { ordersApiSlice } from "./api-slices/ordersApiSlice"
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   configuration: configurationReducer,
   [authSlice.reducerPath]: authSlice.reducer,
   [userApiSlice.reducerPath]: userApiSlice.reducer,
-  [productsApiSlice.reducerPath]: productsApiSlice.reducer
+  [productsApiSlice.reducerPath]: productsApiSlice.reducer,
+  [ordersApiSlice.reducerPath]: ordersApiSlice.reducer
 })
 
 const persistConfig = {
@@ -35,7 +37,8 @@ export const store = configureStore({
     }).concat(
       authSlice.middleware,
       userApiSlice.middleware,
-      productsApiSlice.middleware
+      productsApiSlice.middleware,
+      ordersApiSlice.middleware
     ),
 })
 
