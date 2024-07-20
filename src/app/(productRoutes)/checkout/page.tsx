@@ -1,20 +1,18 @@
 "use client"
 import React from "react"
 import { Form, Input, message } from "antd"
-import { useCreateOrderMutation } from "@/lib/api-slices/ordersApiSlice"
 import { useSelector } from "react-redux"
+import { useRouter } from "next/navigation"
 import ButtonComponent from "@/components/ui/ButtonComponent"
 import BillComponent from "@/components/ui/BillComponent"
-import { redirect } from "next/navigation"
 
 const CheckoutPage = () => {
   const [form] = Form.useForm()
-  const [addOrder, { isLoading, isError }] = useCreateOrderMutation()
-
   const cartProducts = useSelector((state) => state.cart.cart)
   const user = useSelector((state) => state.user.currentUser)
+  const router = useRouter()
 
-  const onFinish = async (values) => {
+  const onFinish = (values) => {
     const { phoneNumber, deliveryAddress } = values
 
     try {
@@ -23,17 +21,24 @@ const CheckoutPage = () => {
         quantity: product.quantity,
       }))
 
-      await addOrder({
+      const orderDetails = JSON.stringify({
         user: user?._id,
         products: orderProducts,
         phoneNumber,
         deliveryAddress,
+        totalAmount: calculateTotalPrice(cartProducts),
       })
-      redirect("/payment")
+
+      message.loading("Redirecting to payment page")
+      router.push(`/payment?orderDetails=${encodeURIComponent(orderDetails)}`);
     } catch (error) {
-      console.error("Error placing order:", error)
-      message.error("Failed to place order")
+      console.error("Error preparing order details:", error)
+      message.error("Failed to proceed to payment")
     }
+  }
+
+  const calculateTotalPrice = (cartProducts) => {
+    return cartProducts.reduce((total, product) => total + product.price * product.quantity, 0)
   }
 
   return (
@@ -84,10 +89,9 @@ const CheckoutPage = () => {
               textColor="text-white"
             />
           </Form.Item>
-          {isError && <h1>Some error occured {isError}</h1>}
         </Form>
 
-        <BillComponent showButton={false} />
+        <BillComponent />
       </div>
     </div>
   )

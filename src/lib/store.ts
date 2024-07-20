@@ -9,6 +9,7 @@ import { persistReducer, persistStore } from "redux-persist"
 import { userApiSlice } from "./api-slices/userApiSlice"
 import { productsApiSlice } from "./api-slices/productsApiSlice"
 import { ordersApiSlice } from "./api-slices/ordersApiSlice"
+import { paymentApiSlice } from "./api-slices/paymentApiSlice"
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   [authSlice.reducerPath]: authSlice.reducer,
   [userApiSlice.reducerPath]: userApiSlice.reducer,
   [productsApiSlice.reducerPath]: productsApiSlice.reducer,
-  [ordersApiSlice.reducerPath]: ordersApiSlice.reducer
+  [ordersApiSlice.reducerPath]: ordersApiSlice.reducer,
+  [paymentApiSlice.reducerPath]: paymentApiSlice.reducer
 })
 
 const persistConfig = {
@@ -38,7 +40,8 @@ export const store = configureStore({
       authSlice.middleware,
       userApiSlice.middleware,
       productsApiSlice.middleware,
-      ordersApiSlice.middleware
+      ordersApiSlice.middleware,
+      paymentApiSlice.middleware
     ),
 })
 

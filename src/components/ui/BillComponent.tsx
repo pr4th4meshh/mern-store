@@ -8,6 +8,7 @@ import {
   GST_PERCENTAGE,
 } from "../../common/utils"
 import Link from "next/link"
+import PaymentButton from "./PaymentButton"
 
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
   throw new Error(
@@ -16,7 +17,7 @@ if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
 }
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
-const BillComponent = ({ showButton }: any) => {
+const BillComponent = ({ cartButton }: any) => {
   const items = useSelector((state) => state.cart.cart)
   const getItemQuantity = (itemID) => {
     const item = items.find((item) => item._id === itemID)
@@ -68,13 +69,14 @@ const BillComponent = ({ showButton }: any) => {
         Order Total: &#8377;
         {CHECKOUT_PRICE_TO_PAY}
       </span>
-      {showButton && (
+      {cartButton ? (
+        <>
         <Link href={"/checkout"}>
           <Button className="p-6 my-4 rounded-full w-full bg-secondary text-white uppercase text-lg">
             Checkout
           </Button>
         </Link>
-      )}
+        </>): <PaymentButton amount={1} /> }
     </div>
   )
 }

@@ -88,7 +88,7 @@ const Cart = () => {
             />
           )}
         />
-        <BillComponent showButton={true} />
+        <BillComponent cartButton />
       </div>
     </div>
   )
