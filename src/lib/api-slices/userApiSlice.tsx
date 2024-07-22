@@ -1,6 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { setUser } from '../slices/userSlice' // Import actions from userSlice
-// import { BASE_URL } from "../../env"
 
 export const userApiSlice = createApi({
   reducerPath: 'clientSlice',
@@ -32,7 +30,14 @@ export const userApiSlice = createApi({
       }),
       providesTags: ['Client'],
     }),
+    addItemToUserCart: builder.mutation({
+      query: ({ userId, item }) => ({
+        url: `/cart/${userId}`,
+        method: 'POST',
+        body: item,
+      }),
+    }),
   }),
 })
 
-export const { useEditUserMutation, useGetUserDetailsQuery } = userApiSlice
+export const { useEditUserMutation, useGetUserDetailsQuery, useAddItemToUserCartMutation } = userApiSlice
