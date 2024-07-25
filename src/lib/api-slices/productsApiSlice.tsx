@@ -4,7 +4,7 @@ export const productsApiSlice = createApi({
   reducerPath: "products",
   tagTypes: ["Product"],
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_PRODUCTS_API_SLICE_KEY,
+    baseUrl: "http://localhost:5000/api/products",
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().user.token

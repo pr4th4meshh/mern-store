@@ -73,7 +73,7 @@ const ProductDetailsPage = ({ params }) => {
       const productToBeAdded = { ...productDetails, selectedSize }
       dispatch(addItemsToCart({ item: productToBeAdded, quantity: 1 }))
       try {
-        await addItemToUserCart({ userId: user._id, item: { productId: productDetails._id, selectedSize, quantity: 1 } }).unwrap()
+        await addItemToUserCart({ userId: user._id, item: { productId: productDetails._id, selectedSize, quantity: 1 } }).unwrap()  
         message.success(`Item of size (${selectedSize.toUpperCase()}) added to the Cart!`)
       } catch (error) {
         console.error("Failed to add item to user cart:", error)

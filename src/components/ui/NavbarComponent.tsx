@@ -29,9 +29,11 @@ const NavbarComponent = () => {
   const wishlistedItems = useSelector(
     (state) => state.wishlistedItems.wishlistedItems,
   )
-  const cartItems = useSelector((state) => state.cart.cart)
-  const { refetch } = useGetUserDetailsQuery(undefined)
+  const { data: userData, refetch } = useGetUserDetailsQuery(user._id)
   const dispatch = useDispatch()
+
+  console.log(userData)
+  const cartItems = userData.cart
 
   useEffect(() => {
     refetch()
