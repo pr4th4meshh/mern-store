@@ -32,11 +32,15 @@ export const ordersApiSlice = createApi({
           body: { status },
         }),
       }),
+      getAllUserOrders: builder.query({
+        query: (userId) => `/${userId}/allOrders`
+      })
   }),
 })
 
 export const {
     useCreateOrderMutation,
     useGetOrderStatusQuery,
-    useUpdateOrderStatusMutation
+    useUpdateOrderStatusMutation,
+    useGetAllUserOrdersQuery
 } = ordersApiSlice

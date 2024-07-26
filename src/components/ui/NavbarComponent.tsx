@@ -1,6 +1,6 @@
 import { Header } from "antd/es/layout/layout"
 import {
-  UserOutlined,
+  ContainerOutlined,
   ShoppingCartOutlined,
   HeartOutlined,
 } from "@ant-design/icons"
@@ -32,13 +32,13 @@ const NavbarComponent = () => {
   const { data: userData, refetch } = useGetUserDetailsQuery(user._id)
   const dispatch = useDispatch()
 
-  console.log(userData)
+  // console.log(userData)
   const cartItems = userData.cart
 
   useEffect(() => {
     refetch()
   }, [refetch])
-  console.log(user)
+  // console.log(user)
   return (
     <>
       <ProfileComponent
@@ -91,7 +91,18 @@ const NavbarComponent = () => {
                     <ShoppingCartOutlined className=" cursor-pointer text-xl" />
                   </Badge>
                 </Link>
-              </span>{" "}
+              </span>
+              <span>
+                <Link href={"/orders"}>
+                  <Badge
+                    size="small"
+                    color="orange"
+                    count={null}
+                  >
+                    <ContainerOutlined className=" cursor-pointer text-xl" />
+                  </Badge>
+                </Link>
+              </span>
             </>
           )}
           {!user ? (

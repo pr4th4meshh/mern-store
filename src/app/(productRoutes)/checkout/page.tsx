@@ -12,6 +12,7 @@ const CheckoutPage = () => {
   const userState = useSelector((state) => state.user.currentUser)
   const { data: user } = useGetUserDetailsQuery(userState._id)
   const cartProducts = user?.cart || []
+  console.log(cartProducts)
   const router = useRouter()
 
   const onFinish = (values) => {
@@ -21,6 +22,7 @@ const CheckoutPage = () => {
       const orderProducts = cartProducts.map((product) => ({
         product: product.productId._id,
         quantity: product.quantity,
+        selectedSize: product.selectedSize
       }))
 
       const orderDetails = JSON.stringify({

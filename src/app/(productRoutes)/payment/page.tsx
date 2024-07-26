@@ -29,7 +29,7 @@ const PaymentPage = () => {
     if (!orderDetails || !orderDetails.products) {
       return false
     }
-    return orderDetails.products.every(({ product, quantity }) => product && quantity)
+    return orderDetails.products.every(({ product, quantity, selectedSize }) => product && quantity && selectedSize)
   }
 
   const paymentHandler = async (e) => {
@@ -147,7 +147,6 @@ const PaymentPage = () => {
     }
     try {
       await createOrder(orderDetails)
-      dispatch(clearCartItems())
       message.success("Order created successfully!")
       router.push("/order-success")
     } catch (error) {
