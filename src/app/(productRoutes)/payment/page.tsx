@@ -4,31 +4,38 @@ import { useSearchParams } from "next/navigation"
 import { message, Button } from "antd"
 import { useCreateOrderMutation } from "@/lib/api-slices/ordersApiSlice"
 import { useRouter } from "next/navigation"
+import { useDispatch } from "react-redux"
+import { clearCartItems } from "@/lib/slices/cartSlice"
 
 const PaymentPage = () => {
   const searchParams = useSearchParams()
   const [orderDetails, setOrderDetails] = useState(null)
   const [createOrder] = useCreateOrderMutation()
   const router = useRouter()
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    // Retrieve and parse orderDetails from query params
     const details = searchParams.get("orderDetails")
     if (details) {
-      setOrderDetails(JSON.parse(decodeURIComponent(details)))
+      const parsedDetails = JSON.parse(decodeURIComponent(details))
+      setOrderDetails(parsedDetails)
     } else {
       message.error("Order details not found")
       router.push("/") // Redirect to home or error page
     }
   }, [searchParams, router])
 
-  console.log(orderDetails)
+  const validateOrderDetails = (orderDetails) => {
+    if (!orderDetails || !orderDetails.products) {
+      return false
+    }
+    return orderDetails.products.every(({ product, quantity }) => product && quantity)
+  }
 
   const paymentHandler = async (e) => {
     e.preventDefault()
-
-    if (!orderDetails) {
-      message.error("Order details not available")
+    if (!orderDetails || !validateOrderDetails(orderDetails)) {
+      message.error("Order details are invalid. Each product must have a valid product ID and quantity.")
       return
     }
 
@@ -134,8 +141,13 @@ const PaymentPage = () => {
   }
 
   const handleCashOnDelivery = async () => {
+    if (!orderDetails || !validateOrderDetails(orderDetails)) {
+      message.error("Order details are invalid. Each product must have a valid product ID and quantity.")
+      return
+    }
     try {
       await createOrder(orderDetails)
+      dispatch(clearCartItems())
       message.success("Order created successfully!")
       router.push("/order-success")
     } catch (error) {

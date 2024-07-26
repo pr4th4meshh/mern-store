@@ -5,11 +5,13 @@ import { useSelector } from "react-redux"
 import { useRouter } from "next/navigation"
 import ButtonComponent from "@/components/ui/ButtonComponent"
 import BillComponent from "@/components/ui/BillComponent"
+import { useGetUserDetailsQuery } from "@/lib/api-slices/userApiSlice"
 
 const CheckoutPage = () => {
   const [form] = Form.useForm()
-  const cartProducts = useSelector((state) => state.cart.cart)
-  const user = useSelector((state) => state.user.currentUser)
+  const userState = useSelector((state) => state.user.currentUser)
+  const { data: user } = useGetUserDetailsQuery(userState._id)
+  const cartProducts = user?.cart || []
   const router = useRouter()
 
   const onFinish = (values) => {
@@ -17,7 +19,7 @@ const CheckoutPage = () => {
 
     try {
       const orderProducts = cartProducts.map((product) => ({
-        product: product._id,
+        product: product.productId._id,
         quantity: product.quantity,
       }))
 
@@ -30,7 +32,7 @@ const CheckoutPage = () => {
       })
 
       message.loading("Redirecting to payment page")
-      router.push(`/payment?orderDetails=${encodeURIComponent(orderDetails)}`);
+      router.push(`/payment?orderDetails=${encodeURIComponent(orderDetails)}`)
     } catch (error) {
       console.error("Error preparing order details:", error)
       message.error("Failed to proceed to payment")
@@ -38,7 +40,7 @@ const CheckoutPage = () => {
   }
 
   const calculateTotalPrice = (cartProducts) => {
-    return cartProducts.reduce((total, product) => total + product.price * product.quantity, 0)
+    return cartProducts.reduce((total, product) => total + product.productId.price * product.quantity, 0)
   }
 
   return (
