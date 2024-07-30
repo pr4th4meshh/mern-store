@@ -33,8 +33,8 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 const Cart = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.currentUser)
-  const { data: userDetails, refetch } = useGetUserDetailsQuery(user?._id, {
+  const user = useSelector((state: any) => state.user.currentUser)
+  const { data: userDetails, refetch } = useGetUserDetailsQuery(user?._id || "", {
     skip: !user,
   })
   const [clearUserCart] = useClearUserCartMutation()
@@ -50,7 +50,7 @@ const Cart = () => {
   console.log("uds", userDetails)
   useEffect(() => {
     if (userDetails && userDetails.cart) {
-      userDetails.cart.forEach((item) => {
+      userDetails.cart.forEach((item: any) => {
         dispatch(addItemsToCart({ item, quantity: item.quantity }))
       })
     }
@@ -72,7 +72,7 @@ const Cart = () => {
     }
   }
 
-  const handleDeleteItemFromCart = async (productId, selectedSize) => {
+  const handleDeleteItemFromCart = async (productId: string, selectedSize: string) => {
     if (!user) {
       message.warning("You need to login/register to perform this action!")
       return
@@ -92,7 +92,7 @@ const Cart = () => {
     }
   }
 
-  const handleAddItemToCart = async (productDetails, selectedSize) => {
+  const handleAddItemToCart = async (productDetails: any, selectedSize: string) => {
     if (!user) {
       message.warning("You need to login/register to perform this action!")
       return
@@ -131,7 +131,7 @@ const Cart = () => {
     }
   }
 
-  const handleReduceItemFromCart = async (productId, selectedSize) => {
+  const handleReduceItemFromCart = async (productId: string, selectedSize: string) => {
     if (!user) {
       message.warning("You need to login/register to perform this action!")
       return
@@ -184,7 +184,7 @@ const Cart = () => {
           }}
           locale={{ emptyText: "You don't have any items wishlisted yet" }}
           dataSource={cartItems}
-          renderItem={(item) => (
+          renderItem={(item: any) => (
             <ListItemComponent
               item={item}
               showQuantityCounter={true}

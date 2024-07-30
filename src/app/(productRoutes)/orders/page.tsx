@@ -1,32 +1,15 @@
 "use client"
 import React, { useEffect } from "react"
-import { LikeOutlined, MessageOutlined, StarOutlined } from "@ant-design/icons"
-import { Avatar, List, Space } from "antd"
+import { StarOutlined } from "@ant-design/icons"
+import { List, Space } from "antd"
 import { useGetAllUserOrdersQuery } from "@/lib/api-slices/ordersApiSlice"
 import { useSelector } from "react-redux"
 import Image from "next/image"
 import moment from "moment"
 import Link from "next/link"
 
-const data = Array.from({ length: 23 }).map((_, i) => ({
-  href: "https://ant.design",
-  title: `ant design part ${i}`,
-  avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${i}`,
-  description:
-    "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-  content:
-    "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-}))
-
-const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-)
-
 const Orders_Page = () => {
-  const user = useSelector((state) => state.user.currentUser)
+  const user = useSelector((state: any) => state.user.currentUser)
   const { data: userCart, refetch } = useGetAllUserOrdersQuery(user._id)
   useEffect(() => {
     refetch()
@@ -48,7 +31,7 @@ const Orders_Page = () => {
         itemLayout="vertical"
         size="large"
         dataSource={userCart}
-        renderItem={(item) => (
+        renderItem={(item: any) => (
           <List.Item
           className="border-gray-400 rounded-lg shadow-lg"
             key={item.products?.name}
@@ -64,7 +47,7 @@ const Orders_Page = () => {
           >
             <div className="flex flex-col">
               <h1 className="text-xl font-semibold">Products:</h1>
-              {item.products.map((product, i) => (
+              {item.products.map((product: any, i: number) => (
                 <Link href={`/product/${product.product._id}`} >
                     <span className="text-lg"> &#8599; {product.product.name}</span>
                 </Link>

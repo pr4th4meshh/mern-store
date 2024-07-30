@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic"
 const Wishlist = () => {
   const dispatch = useDispatch()
   const wishlistedItems = useSelector(
-    (state) => state.wishlistedItems.wishlistedItems,
+    (state: any) => state.wishlistedItems.wishlistedItems,
   )
 
   const handleRemoveItemFromWishlist = (itemId: string) => {

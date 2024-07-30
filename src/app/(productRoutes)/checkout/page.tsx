@@ -9,17 +9,17 @@ import { useGetUserDetailsQuery } from "@/lib/api-slices/userApiSlice"
 
 const CheckoutPage = () => {
   const [form] = Form.useForm()
-  const userState = useSelector((state) => state.user.currentUser)
+  const userState = useSelector((state:any) => state.user.currentUser)
   const { data: user } = useGetUserDetailsQuery(userState._id)
   const cartProducts = user?.cart || []
   console.log(cartProducts)
   const router = useRouter()
 
-  const onFinish = (values) => {
+  const onFinish = (values: {phoneNumber: number; deliveryAddress: string}) => {
     const { phoneNumber, deliveryAddress } = values
 
     try {
-      const orderProducts = cartProducts.map((product) => ({
+      const orderProducts = cartProducts.map((product: any) => ({
         product: product.productId._id,
         quantity: product.quantity,
         selectedSize: product.selectedSize
@@ -41,8 +41,8 @@ const CheckoutPage = () => {
     }
   }
 
-  const calculateTotalPrice = (cartProducts) => {
-    return cartProducts.reduce((total, product) => total + product.productId.price * product.quantity, 0)
+  const calculateTotalPrice = (cartProducts: any) => {
+    return cartProducts.reduce((total: number, product: any) => total + product.productId.price * product.quantity, 0)
   }
 
   return (

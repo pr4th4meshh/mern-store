@@ -31,8 +31,13 @@ interface ProfileDrawerProps {
   userID: string
 }
 
-const ProfileDrawer = ({ userName, userEmail, userPhoto, userID }: ProfileDrawerProps) => {
-  const [file, setFile] = useState(null)
+const ProfileDrawer = ({
+  userName,
+  userEmail,
+  userPhoto,
+  userID,
+}: ProfileDrawerProps) => {
+  const [file, setFile] = useState<null | any>(null)
   const [fileUploadError, setFileUploadError] = useState(false)
   const [filePercentage, setFilePercentage] = useState(0)
   const [avatarUrl, setAvatarUrl] = useState(userPhoto) // Initializing with the current user photo
@@ -42,13 +47,13 @@ const ProfileDrawer = ({ userName, userEmail, userPhoto, userID }: ProfileDrawer
   const [signout, { isLoading: signoutLoading }] = useSignoutMutation()
   const [editUser] = useEditUserMutation()
   const { data: userData, refetch } = useGetUserDetailsQuery(userID)
-  const fileRef = useRef<undefined | null>(null)
+  const fileRef = useRef<any | null>(null)
 
   const toggle = () => {
     dispatch(toggleDrawer(DRAWER_STATE.OPEN_DRAWER_STATE))
   }
 
-  const handleFileUpload = (file: string) => {
+  const handleFileUpload = (file: any) => {
     const storage = getStorage(app)
     const fileName = new Date().getTime() + file.name
     const storageRef = ref(storage, fileName)
@@ -130,17 +135,22 @@ const ProfileDrawer = ({ userName, userEmail, userPhoto, userID }: ProfileDrawer
           </div>
 
           <div className="flex flex-col items-center">
-          <Avatar
+            <Avatar
               alt="pfp image"
               size={100}
               src={avatarUrl} // Use avatarUrl for the Avatar component
             />
             <Button onClick={() => fileRef.current.click()}>Edit Avatar</Button>
             <input
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) => {
+                const files = e.target.files
+                if (files && files.length > 0) {
+                  setFile(files[0])
+                }
+              }}
               type="file"
               ref={fileRef}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               accept="image/*"
             />
             <p className="self-center">

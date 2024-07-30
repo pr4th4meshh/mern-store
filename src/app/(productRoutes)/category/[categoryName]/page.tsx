@@ -7,7 +7,7 @@ import { useGetProductsByCategoryQuery } from '@/lib/api-slices/productsApiSlice
 
 const CategoryPage = ({ params }: { params: { categoryName: string } }) => {
   const { data: productsByCategory, isLoading: productsByCategoryLoading, refetch: productsByCategoryRefetch } = useGetProductsByCategoryQuery(params.categoryName)
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState<null | string[]>([]);
 
   useEffect(() => {
     productsByCategoryRefetch();
@@ -19,7 +19,7 @@ const CategoryPage = ({ params }: { params: { categoryName: string } }) => {
   
   if(!filteredProducts) return;
 
-  const handleFilterChange = (filterKey) => {
+  const handleFilterChange = (filterKey: any) => {
     let sortedProducts = [...productsByCategory];
     switch (filterKey) {
       case "price-low-high":
@@ -29,13 +29,13 @@ const CategoryPage = ({ params }: { params: { categoryName: string } }) => {
         sortedProducts.sort((a, b) => b.price - a.price);
         break;
       case "color-red":
-        sortedProducts = productsByCategory.filter((product) => product.color === "Cream");
+        sortedProducts = productsByCategory.filter((product: any) => product.color === "Cream");
         break;
       case "color-blue":
-        sortedProducts = productsByCategory.filter((product) => product.color === "blue");
+        sortedProducts = productsByCategory.filter((product: any) => product.color === "blue");
         break;
       case "color-green":
-        sortedProducts = productsByCategory.filter((product) => product.color === "green");
+        sortedProducts = productsByCategory.filter((product: any) => product.color === "green");
         break;
       default:
         sortedProducts = productsByCategory;
@@ -60,7 +60,7 @@ const CategoryPage = ({ params }: { params: { categoryName: string } }) => {
   );
 
   return (
-      <div className='h-auto container mx-auto p-10'>
+      <div className='h-auto container mx-auto p-4 md:p-8'>
         <h1 className='text-4xl uppercase text-center'>Explore in {params.categoryName} Collection:</h1>
         <div className='flex justify-center gap-4 my-4'>
           <Dropdown overlay={priceMenu} trigger={['click']}>
@@ -75,7 +75,7 @@ const CategoryPage = ({ params }: { params: { categoryName: string } }) => {
           </Dropdown>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          {filteredProducts?.map((product) => (
+          {filteredProducts?.map((product: any) => (
             <CardComponent key={product._id} product={product} isLoading={productsByCategoryLoading} />
           ))}
           {filteredProducts.length === 0 && <h1>no prods found</h1> }

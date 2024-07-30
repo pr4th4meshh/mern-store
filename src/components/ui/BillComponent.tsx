@@ -19,20 +19,20 @@ if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 const BillComponent = ({ cartButton }: any) => {
-  const user = useSelector((state) => state.user.currentUser)
-  const {data: items} = useGetUserDetailsQuery(user._id)
+  const user = useSelector((state: any) => state.user.currentUser)
+  const { data: items } = useGetUserDetailsQuery(user._id)
   console.log("itemsL", items)
 
-  const getItemQuantity = (itemID) => {
-    const item = items.cart?.find((item) => item._id === itemID)
+  const getItemQuantity = (itemID: string) => {
+    const item = items.cart?.find((item: any) => item._id === itemID)
     return item ? item.quantity : 0
   }
 
-  const getItemTotalPrice = (item) => {
+  const getItemTotalPrice = (item: any) => {
     return item.productId.price * getItemQuantity(item._id)
   }
 
-  const totalPriceToCheckout = items.cart?.reduce((total, item) => {
+  const totalPriceToCheckout = items.cart?.reduce((total: string, item: any) => {
     return total + item.productId.price * item.quantity
   }, 0)
 
@@ -45,7 +45,7 @@ const BillComponent = ({ cartButton }: any) => {
   return (
     <div className="p-6 shadow-lg border h-min w-[500px]">
       <h1 className="text-xl pb-1">Order summary:</h1>
-      {items.cart.map((item) => (
+      {items.cart.map((item: any) => (
         <div
           key={item._id}
           className="flex flex-row p-1 text-lg text-gray-500 justify-between"
@@ -73,14 +73,15 @@ const BillComponent = ({ cartButton }: any) => {
         Order Total: &#8377;
         {CHECKOUT_PRICE_TO_PAY}
       </span>
-      {cartButton ? (
+      {cartButton && (
         <>
-        <Link href={"/checkout"}>
-          <Button className="p-6 my-4 rounded-full w-full bg-secondary text-white uppercase text-lg">
-            Checkout
-          </Button>
-        </Link>
-        </>): <PaymentButton amount={1} /> }
+          <Link href={"/checkout"}>
+            <Button className="p-6 my-4 rounded-full w-full bg-secondary text-white uppercase text-lg">
+              Checkout
+            </Button>
+          </Link>
+        </>
+      )}
     </div>
   )
 }

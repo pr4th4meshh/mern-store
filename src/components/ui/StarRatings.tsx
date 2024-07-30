@@ -12,7 +12,7 @@ const StarRating = ({ productId }: any) => {
   const [averageRating, setAverageRating] = useState(0)
   const [, setUserRating] = useState(0)
 
-  const user = useSelector((state) => state.user.currentUser)
+  const user = useSelector((state: any) => state.user.currentUser)
   const {
     data: ratingsData = [],
     refetch,
@@ -58,7 +58,7 @@ const StarRating = ({ productId }: any) => {
   }
 
   if (error) {
-    return <div>Error loading ratings: {error.message}</div>
+    return <div>Error loading ratings</div>
   }
 
   return (

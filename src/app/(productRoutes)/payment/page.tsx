@@ -4,15 +4,30 @@ import { useSearchParams } from "next/navigation"
 import { message, Button } from "antd"
 import { useCreateOrderMutation } from "@/lib/api-slices/ordersApiSlice"
 import { useRouter } from "next/navigation"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { clearCartItems } from "@/lib/slices/cartSlice"
+import { useClearUserCartMutation } from "@/lib/api-slices/userApiSlice"
+
+interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  sizes: string[];
+  productImages: string[];
+  ratings: string[];
+}
 
 const PaymentPage = () => {
   const searchParams = useSearchParams()
   const [orderDetails, setOrderDetails] = useState(null)
   const [createOrder] = useCreateOrderMutation()
+  const [clearUserCart] = useClearUserCartMutation()
   const router = useRouter()
   const dispatch = useDispatch()
+
+  const user = useSelector((state: any) => state.user.currentUser)
 
   useEffect(() => {
     const details = searchParams.get("orderDetails")
@@ -25,14 +40,14 @@ const PaymentPage = () => {
     }
   }, [searchParams, router])
 
-  const validateOrderDetails = (orderDetails) => {
+  const validateOrderDetails = (orderDetails: any) => {
     if (!orderDetails || !orderDetails.products) {
       return false
     }
-    return orderDetails.products.every(({ product, quantity, selectedSize }) => product && quantity && selectedSize)
+    return orderDetails.products.every(({ product, quantity, selectedSize }: {product: Product; quantity: number; selectedSize: string}) => product && quantity && selectedSize)
   }
 
-  const paymentHandler = async (e) => {
+  const paymentHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (!orderDetails || !validateOrderDetails(orderDetails)) {
       message.error("Order details are invalid. Each product must have a valid product ID and quantity.")
@@ -71,7 +86,7 @@ const PaymentPage = () => {
         description: "Buying products",
         image: "",
         order_id: order.id,
-        handler: async function (response) {
+        handler: async function (response: any) {
           const body = {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
@@ -100,6 +115,8 @@ const PaymentPage = () => {
             if (jsonRes.msg === "success") {
               await createOrder(orderDetails)
               message.success("Order created successfully!")
+              await clearUserCart(user._id).unwrap()
+              dispatch(clearCartItems())
               router.push("/order-success")
             } else {
               message.error("Payment verification failed")
@@ -123,7 +140,7 @@ const PaymentPage = () => {
       }
 
       var rzp1 = new window.Razorpay(options)
-      rzp1.on("payment.failed", function (response) {
+      rzp1.on("payment.failed", function (response: any) {
         alert(response.error.code)
         alert(response.error.description)
         alert(response.error.source)
@@ -148,6 +165,8 @@ const PaymentPage = () => {
     try {
       await createOrder(orderDetails)
       message.success("Order created successfully!")
+      await clearUserCart(user._id).unwrap()
+      dispatch(clearCartItems())
       router.push("/order-success")
     } catch (error) {
       console.error("Error verifying payment:", error)

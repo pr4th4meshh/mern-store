@@ -3,10 +3,11 @@ import {
   ContainerOutlined,
   ShoppingCartOutlined,
   HeartOutlined,
+  MenuOutlined,
 } from "@ant-design/icons"
 import Link from "next/link"
 import Image from "next/image"
-import React, { useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import logo from "../../../public/REINlight.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { selectCurrentUser } from "@/lib/slices/userSlice"
@@ -14,7 +15,7 @@ import ProfileComponent from "./ProfileComponent"
 import { toggleDrawer } from "@/lib/slices/configurationSlice"
 import { DRAWER_STATE } from "@/common/states"
 import { useGetUserDetailsQuery } from "@/lib/api-slices/userApiSlice"
-import { Avatar, Badge } from "antd"
+import { Avatar, Badge, Drawer, Menu } from "antd"
 
 const NAV_LINKS = [
   { label: "home", key: "/" },
@@ -27,18 +28,100 @@ const NAV_LINKS = [
 const NavbarComponent = () => {
   const user = useSelector(selectCurrentUser)
   const wishlistedItems = useSelector(
-    (state) => state.wishlistedItems.wishlistedItems,
+    (state: any) => state.wishlistedItems.wishlistedItems,
   )
-  const { data: userData, refetch } = useGetUserDetailsQuery(user._id)
-  const dispatch = useDispatch()
 
-  // console.log(userData)
-  const cartItems = userData.cart
+  const dispatch = useDispatch()
+  const [drawerVisible, setDrawerVisible] = useState(false)
+
+  const { data: userData, refetch } = useGetUserDetailsQuery(user?._id || "");
+
+  useEffect(() => {
+    if (user) {
+      refetch();
+    }
+  }, [user, refetch]);
 
   useEffect(() => {
     refetch()
   }, [refetch])
-  // console.log(user)
+
+  const cartItems = userData?.cart || []
+
+  const handleDrawerOpen = () => {
+    setDrawerVisible(true)
+  }
+
+  const handleDrawerClose = () => {
+    setDrawerVisible(false)
+  }
+
+  const drawerContent = (
+    <Menu mode="inline" onClick={handleDrawerClose}>
+      {NAV_LINKS.map((tab) => (
+        <Menu.Item key={tab.key}>
+          <Link href={tab.key}>{tab.label.toUpperCase()}</Link>
+        </Menu.Item>
+      ))}
+      {user && (
+        <>
+          <Menu.Item key="wishlist">
+            <Link href={"/wishlist"}>
+              <Badge
+                size="small"
+                color="orange"
+                count={wishlistedItems.length || null}
+              >
+                <HeartOutlined className="cursor-pointer text-xl" />
+              </Badge>
+              <span className="pl-2">Wishlist</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="cart">
+            <Link href={"/cart"}>
+              <Badge
+                size="small"
+                color="orange"
+                count={cartItems.length || null}
+              >
+                <ShoppingCartOutlined className="cursor-pointer text-xl" />
+              </Badge>
+              <span className="pl-2">Cart</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="orders">
+            <Link href={"/orders"}>
+              <Badge size="small" color="orange" count={null}>
+                <ContainerOutlined className="cursor-pointer text-xl" />
+              </Badge>
+              <span className="pl-2">Orders</span> 
+            </Link>
+          </Menu.Item>
+        </>
+      )}
+      {!user ? (
+        <Menu.Item key="register">
+          <Link href="/sign-up">
+            <span className="font-normal bg-secondary text-white p-2 rounded-md">
+              Register
+            </span>
+          </Link>
+        </Menu.Item>
+      ) : (
+        <Menu.Item key="profile">
+          <Avatar
+            src={user.avatar}
+            onClick={() =>
+              dispatch(toggleDrawer(DRAWER_STATE.OPEN_DRAWER_STATE))
+            }
+            className="cursor-pointer text-xl mr-2"
+          />
+          Profile
+        </Menu.Item>
+      )}
+    </Menu>
+  )
+
   return (
     <>
       <ProfileComponent
@@ -47,8 +130,30 @@ const NavbarComponent = () => {
         userID={user?._id}
         userPhoto={user?.avatar}
       />
-      <Header className="hidden md:flex items-center py-12 bg-white text-lg font-semibold border-b">
-        <div className="flex flex-1">
+      <Header className="bg-white text-lg font-semibold border-b py-6 md:py-12 flex items-center justify-between px-6 md:px-16">
+        {/* <div className="flex items-center justify-between px-4 md:px-8"> */}
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden p-2"
+          onClick={handleDrawerOpen}
+          aria-label="Toggle Menu"
+        >
+          <MenuOutlined className="text-xl" />
+        </button>
+
+        {/* Logo */}
+        <Link href="/" className="flex">
+          <Image
+            src={logo}
+            height={120}
+            width={150}
+            className="md:h-[120px] md:w-[150px] h-[70px] w-[100px]"
+            quality={100}
+            alt="reinventory"
+          />
+        </Link>
+
+        <div className="hidden md:flex">
           {NAV_LINKS.map((tab) => (
             <Link href={tab.key} key={tab.key} className="px-3 uppercase">
               {tab.label}
@@ -56,20 +161,10 @@ const NavbarComponent = () => {
           ))}
         </div>
 
-        <Link href="/">
-          <Image
-            src={logo}
-            height={120}
-            width={150}
-            quality={100}
-            alt="reinventory"
-          />
-        </Link>
-
-        <div className="flex flex-1 justify-end gap-7 items-center">
+        {/* Desktop Menu Items */}
+        <div className="hidden md:flex flex-1 items-center justify-end gap-7">
           {user && (
             <>
-              {" "}
               <span>
                 <Link href={"/wishlist"}>
                   <Badge
@@ -77,7 +172,7 @@ const NavbarComponent = () => {
                     color="orange"
                     count={wishlistedItems.length || null}
                   >
-                    <HeartOutlined className=" cursor-pointer text-xl" />
+                    <HeartOutlined className="cursor-pointer text-xl" />
                   </Badge>
                 </Link>
               </span>
@@ -88,18 +183,14 @@ const NavbarComponent = () => {
                     color="orange"
                     count={cartItems.length || null}
                   >
-                    <ShoppingCartOutlined className=" cursor-pointer text-xl" />
+                    <ShoppingCartOutlined className="cursor-pointer text-xl" />
                   </Badge>
                 </Link>
               </span>
               <span>
                 <Link href={"/orders"}>
-                  <Badge
-                    size="small"
-                    color="orange"
-                    count={null}
-                  >
-                    <ContainerOutlined className=" cursor-pointer text-xl" />
+                  <Badge size="small" color="orange" count={null}>
+                    <ContainerOutlined className="cursor-pointer text-xl" />
                   </Badge>
                 </Link>
               </span>
@@ -114,16 +205,28 @@ const NavbarComponent = () => {
           ) : (
             <span>
               <Avatar
-              src={user.avatar}
+                src={user.avatar}
                 onClick={() =>
                   dispatch(toggleDrawer(DRAWER_STATE.OPEN_DRAWER_STATE))
                 }
-                className=" cursor-pointer text-xl"
+                className="cursor-pointer text-xl"
               />
             </span>
           )}
         </div>
+        {/* </div> */}
       </Header>
+      {/* Mobile Drawer */}
+      <Drawer
+        placement="left"
+        closable
+        onClose={handleDrawerClose}
+        visible={drawerVisible}
+        bodyStyle={{ padding: 0 }}
+        width={250}
+      >
+        {drawerContent}
+      </Drawer>
     </>
   )
 }

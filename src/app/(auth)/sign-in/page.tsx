@@ -13,7 +13,7 @@ const SignIn = () => {
   const router = useRouter()
   const dispatch = useDispatch()
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: { email: string; password: string }) => {
     try {
       const user = await signin(values).unwrap()
       dispatch(setUser({ user: user, accessToken: user.token }))
@@ -21,13 +21,19 @@ const SignIn = () => {
       form.resetFields()
       router.push("/")
     } catch (error) {
-      message.error(
-        error?.data?.message || "Invalid Credentials, please try again",
-      )
+      message.error("Invalid Credentials, please try again")
+      console.log(error)
     }
   }
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: {
+    values: { email: string; password: string }
+    errorFields: {
+      name: (string | number)[]
+      errors: string[]
+    }[]
+    outOfDate: boolean
+  }) => {
     console.log("Failed:", errorInfo)
   }
 

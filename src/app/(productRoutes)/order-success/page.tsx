@@ -1,14 +1,14 @@
 "use client"
 import React from "react"
 import Confetti from "react-confetti"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/router"
 import ButtonComponent from "@/components/ui/ButtonComponent"
 
 const OrderSuccessPage = () => {
   const router = useRouter()
 
   const handleGoBack = () => {
-    router.push("/", { shallow: true })
+    router.push("/", undefined, { shallow: true })
   }
 
   return (

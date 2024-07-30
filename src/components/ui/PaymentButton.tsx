@@ -2,8 +2,8 @@ import React from "react"
 import Logo from "../../../public/REINlight.png"
 import { Button } from "antd"
 
-const PaymentButton = ({ amount }) => {
-  const handlePayment = async (e) => {
+const PaymentButton = ({ amount }: { amount: number }) => {
+  const handlePayment = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const currency = "INR"
     const receiptId = "qwsaq1"
     const response = await fetch("http://localhost:5000/api/payment/order", {
@@ -27,7 +27,7 @@ const PaymentButton = ({ amount }) => {
       description: "Buying products",
       image: Logo,
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      handler: async function (response) {
+      handler: async function (response: any) {
         const body = {
           ...response,
         }
@@ -59,7 +59,7 @@ const PaymentButton = ({ amount }) => {
       },
     }
     var rzp1 = new window.Razorpay(options)
-    rzp1.on("payment.failed", function (response) {
+    rzp1.on("payment.failed", function (response: any) {
       alert(response.error.code)
       alert(response.error.description)
       alert(response.error.source)

@@ -7,6 +7,17 @@ import CardComponent from "@/components/ui/CardComponent"
 
 export const dynamic = "force-dynamic"
 
+interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  sizes: string[];
+  productImages: string[];
+  ratings: string[];
+}
+
 const Featured = () => {
   const { data: productsData, isLoading: productsDataLoading } =
     useGetAllProductsQuery(undefined)
@@ -27,9 +38,9 @@ const Featured = () => {
         check out some featured pieces:
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {productsData?.map((product) => (
+        {productsData?.map((product: Product) => (
           <CardComponent
-            key={product._id}
+            key={product._id || ''}
             product={product}
             isLoading={productsDataLoading}
           />

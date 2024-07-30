@@ -21,8 +21,8 @@ const HomeComponent = () => {
         <div className="absolute top-[600px] text-white flex flex-row items-end">
           <Link href="/featured">
             <div className=" flex flex-col justify-center hover:ease-in-out hover:text-secondary">
-              <h1 className="text-3xl md:text-6xl">RE-IN SPRING COLLECTION</h1>
-              <p className="text-3xl text-center underline">TAP HERE TO SHOP</p>
+              <h1 className="text-2xl md:text-6xl">RE-IN SPRING COLLECTION</h1>
+              <p className="text-2xl text-center underline">TAP HERE TO SHOP</p>
             </div>
           </Link>
         </div>

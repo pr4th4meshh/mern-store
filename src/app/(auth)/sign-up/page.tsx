@@ -13,7 +13,11 @@ const Register = () => {
   const dispatch = useDispatch()
   const router = useRouter()
 
-  const onFinish = async (values) => {
+  const onFinish = async (values: {
+    username: string
+    email: string
+    password: string
+  }) => {
     try {
       const user = await signup(values).unwrap()
       message.success("Signup successful!")
@@ -21,16 +25,15 @@ const Register = () => {
       form.resetFields()
       router.push("/sign-in")
     } catch (error) {
-      message.error(error?.data?.message || "Signup failed. Please try again.")
+      message.error("Signup failed. Please try again.")
+      console.log(error)
     }
   }
 
   return (
     <div className="flex justify-center items-center h-[100vh] bg-primary">
       <div>
-        <h1 className="text-2xl text-center pb-10">
-          Welcome to Re-Inventory
-        </h1>
+        <h1 className="text-2xl text-center pb-10">Welcome to Re-Inventory</h1>
         <Form
           className="border p-10 sm:w-[300px] md:w-[400px] bg-white"
           layout="vertical"

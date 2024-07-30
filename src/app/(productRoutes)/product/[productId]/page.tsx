@@ -1,7 +1,11 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { message } from "antd"
-import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons"
+import {
+  HeartOutlined,
+  ShoppingCartOutlined,
+  ArrowLeftOutlined,
+} from "@ant-design/icons"
 import ButtonComponent from "@/components/ui/ButtonComponent"
 import { useGetProductByIdQuery } from "@/lib/api-slices/productsApiSlice"
 import { useDispatch, useSelector } from "react-redux"
@@ -10,6 +14,7 @@ import { addItemsToCart } from "@/lib/slices/cartSlice"
 import { useAddItemToUserCartMutation } from "@/lib/api-slices/userApiSlice"
 import StarRating from "@/components/ui/StarRatings"
 import ProductGallery from "./_components/ProductGallery"
+import { useRouter } from "next/navigation"
 
 export const dynamic = "force-dynamic"
 
@@ -29,14 +34,22 @@ const product = {
   ],
 }
 
-const ProductDetailsPage = ({ params }) => {
-  const { data: productDetails, error: productDetailsError, isLoading: productDetailsLoading, refetch } = useGetProductByIdQuery(params.productId)
+const ProductDetailsPage = ({ params }: any) => {
+  const {
+    data: productDetails,
+    error: productDetailsError,
+    isLoading: productDetailsLoading,
+    refetch,
+  } = useGetProductByIdQuery(params.productId)
   const [selectedSize, setSelectedSize] = useState(productDetails?.sizes[0])
   const dispatch = useDispatch()
-  const wishlistedItems = useSelector((state) => state.wishlistedItems.wishlistedItems)
-  const cart = useSelector((state) => state.cart.cart)
-  const user = useSelector((state) => state.user.currentUser)
+  const wishlistedItems = useSelector(
+    (state: any) => state.wishlistedItems.wishlistedItems,
+  )
+  const cart = useSelector((state: any) => state.cart.cart)
+  const user = useSelector((state: any) => state.user.currentUser)
   const [addItemToUserCart] = useAddItemToUserCartMutation()
+  const router = useRouter()
 
   useEffect(() => {
     refetch()
@@ -48,7 +61,9 @@ const ProductDetailsPage = ({ params }) => {
     }
   }, [productDetails])
 
-  const isItemInWishlist = wishlistedItems.some((item) => item._id === productDetails?._id)
+  const isItemInWishlist = wishlistedItems.some(
+    (item: any) => item._id === productDetails?._id,
+  )
 
   const handleAddToWishlisted = () => {
     if (!user) {
@@ -58,12 +73,17 @@ const ProductDetailsPage = ({ params }) => {
     } else {
       const productWithSelectedSize = { ...productDetails, selectedSize }
       dispatch(addItemToWishlist({ item: productWithSelectedSize }))
-      message.success(`Item of size (${selectedSize.toUpperCase()}) added to wishlited items!`)
+      message.success(
+        `Item of size (${selectedSize.toUpperCase()}) added to wishlited items!`,
+      )
     }
   }
 
   const handleAddToCart = async () => {
-    const isItemInCart = cart.some((item) => item._id === productDetails._id && item.selectedSize === selectedSize)
+    const isItemInCart = cart.some(
+      (item: any) =>
+        item._id === productDetails._id && item.selectedSize === selectedSize,
+    )
 
     if (!user) {
       message.warning("You need to login/register to perform this action!")
@@ -73,8 +93,13 @@ const ProductDetailsPage = ({ params }) => {
       const productToBeAdded = { ...productDetails, selectedSize }
       dispatch(addItemsToCart({ item: productToBeAdded, quantity: 1 }))
       try {
-        await addItemToUserCart({ userId: user._id, item: { productId: productDetails._id, selectedSize, quantity: 1 } }).unwrap()  
-        message.success(`Item of size (${selectedSize.toUpperCase()}) added to the Cart!`)
+        await addItemToUserCart({
+          userId: user._id,
+          item: { productId: productDetails._id, selectedSize, quantity: 1 },
+        }).unwrap()
+        message.success(
+          `Item of size (${selectedSize.toUpperCase()}) added to the Cart!`,
+        )
       } catch (error) {
         console.error("Failed to add item to user cart:", error)
         message.error("Failed to add item to cart")
@@ -83,17 +108,28 @@ const ProductDetailsPage = ({ params }) => {
   }
 
   return (
-    <div className="container mx-auto p-8">
+    <div className="container mx-auto p-4 md:p-8">
+      <h1
+        className="underline text-lg p-3 flex items-center font-semibold text-secondary"
+        onClick={() => router.back()}
+      >
+        <ArrowLeftOutlined className="mr-1" /> Go back
+      </h1>
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-1/2">
-          <ProductGallery apiImages={productDetails?.productImages} images={product.images} />
+          <ProductGallery
+            apiImages={productDetails?.productImages}
+            images={product.images}
+          />
         </div>
         <div className="w-full flex flex-col text-xl md:w-1/2 md:pl-10 mt-10 md:mt-10">
           <h1 className="text-3xl font-bold mb-4">
-            {productDetails?.name.charAt(0).toUpperCase() + productDetails?.name.slice(1)}
+            {productDetails?.name.charAt(0).toUpperCase() +
+              productDetails?.name.slice(1)}
           </h1>
           <p className="text-gray-700 mb-4">
-            {productDetails?.description.charAt(0).toUpperCase() + productDetails?.description.slice(1)}
+            {productDetails?.description.charAt(0).toUpperCase() +
+              productDetails?.description.slice(1)}
           </p>
           <p className="text-gray-700 mb-4">
             <StarRating productId={productDetails?._id} />
@@ -106,7 +142,7 @@ const ProductDetailsPage = ({ params }) => {
           </p>
           <div className="flex flex-wrap gap-3 mb-3">
             <span>Sizes:</span>
-            {productDetails?.sizes.map((size, index) => (
+            {productDetails?.sizes.map((size: string, index: number) => (
               <input
                 type="button"
                 value={size.toUpperCase()}
@@ -120,7 +156,9 @@ const ProductDetailsPage = ({ params }) => {
           </div>
 
           <ButtonComponent
-            title={isItemInWishlist ? "Item added to Wishlist" : "Add to Wishlist"}
+            title={
+              isItemInWishlist ? "Item added to Wishlist" : "Add to Wishlist"
+            }
             textColor="text-white"
             bgColor="bg-secondary"
             icon={<HeartOutlined />}
