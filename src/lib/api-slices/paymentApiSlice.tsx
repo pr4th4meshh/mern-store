@@ -4,7 +4,7 @@ import { RootState } from "../store"
 export const paymentApiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000",
+    baseUrl: process.env.NEXT_PUBLIC_PAYMENTS_API_KEY,
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState
