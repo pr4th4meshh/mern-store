@@ -4,7 +4,7 @@ import { List, message } from "antd"
 import { SearchOutlined } from "@ant-design/icons"
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import ListItemComponent from "@/components/ui/ListItemCompo"
+import WishlistItemComponent from "@/components/ui/WishlistItemComponent"
 
 export const dynamic = "force-dynamic"
 
@@ -42,7 +42,7 @@ const Wishlist = () => {
         locale={{ emptyText: "You don't have any items wishlisted yet" }}
         dataSource={wishlistedItems}
         renderItem={(item: any) => (
-          <ListItemComponent
+          <WishlistItemComponent
             item={item}
             handleDeleteItem={() => handleRemoveItemFromWishlist(item._id)}
           />

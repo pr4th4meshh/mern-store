@@ -4,7 +4,7 @@ import Link from "next/link"
 import React from "react"
 import Image from "next/image"
 
-interface ListItemComponentProps {
+interface IWishlistItems {
   item: any
   showQuantityCounter?: boolean
   handleRemoveQuantity?: () => void
@@ -12,18 +12,16 @@ interface ListItemComponentProps {
   handleDeleteItem?: () => void
 }
 
-const ListItemComponent = ({
+const WishlistItemComponent = ({
   item,
   showQuantityCounter,
   handleRemoveQuantity,
   handleAddQuantity,
   handleDeleteItem,
-}: ListItemComponentProps) => {
-  console.log("ITEM", item)
+}: IWishlistItems) => {
   if (!item) return <h1>404 return to home</h1>
   console.log("listitem", item)
   const {
-    productId: { _id, name, description, price, category, productImages },
     selectedSize,
     quantity,
     _id: itemId,
@@ -33,23 +31,23 @@ const ListItemComponent = ({
       key={item?.title}
       className="border-gray-400 rounded-lg shadow-lg my-4"
       extra={
-        <Link href={`/product/${_id}`}>
+        <Link href={`/product/${item._id}`}>
           <Image
             width={200}
             height={200}
             className="object-cover rounded-xl w-[150px] h-[150px]"
             alt={item.name}
-            src={productImages[0] || "https://via.placeholder.com/300x300/ff0000"}
+            src={item.productImages[0] || "https://via.placeholder.com/300x300/ff0000"}
           />
         </Link>
       }
     >
       <div className="flex flex-col">
         <h1 className="text-xl font-semibold mb-2">
-          {name?.charAt(0).toUpperCase() + name?.slice(1)}
+          {item.name?.charAt(0).toUpperCase() + item.name?.slice(1)}
         </h1>
         <span className=" text-gray-500 mb-1">
-          {truncateDescription(description ? description: "")}
+          {truncateDescription(item.description ? item.description: "")}
         </span>
         <p>
           Size:{" "}
@@ -59,7 +57,7 @@ const ListItemComponent = ({
         </p>
 
         <p>
-          Price: <span className="text-lg font-semibold">${price ? price: ""}</span>
+          Price: <span className="text-lg font-semibold">${item?.price}</span>
         </p>
 
         <div className="flex">
@@ -96,4 +94,4 @@ const ListItemComponent = ({
   )
 }
 
-export default ListItemComponent
+export default WishlistItemComponent
