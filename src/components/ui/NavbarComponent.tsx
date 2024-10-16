@@ -30,6 +30,8 @@ const NavbarComponent = () => {
   const wishlistedItems = useSelector(
     (state: any) => state.wishlistedItems.wishlistedItems,
   )
+  const cartItemsFromState = useSelector((state: any) => state.cart.cart)
+  console.log(cartItemsFromState, "CARTFROMSTATE")
 
   const dispatch = useDispatch()
   const [drawerVisible, setDrawerVisible] = useState(false)
@@ -42,11 +44,12 @@ const NavbarComponent = () => {
     }
   }, [user, refetch]);
 
+  const cartItems = userData?.cart || []
+  console.log(cartItems, "Cart Items")
+
   useEffect(() => {
     refetch()
-  }, [refetch])
-
-  const cartItems = userData?.cart || []
+  }, [refetch, cartItems])
 
   const handleDrawerOpen = () => {
     setDrawerVisible(true)
@@ -82,7 +85,7 @@ const NavbarComponent = () => {
               <Badge
                 size="small"
                 color="orange"
-                count={cartItems.length || null}
+                count={cartItemsFromState.length || cartItems.length || null}
               >
                 <ShoppingCartOutlined className="cursor-pointer text-xl" />
               </Badge>
@@ -181,7 +184,7 @@ const NavbarComponent = () => {
                   <Badge
                     size="small"
                     color="orange"
-                    count={cartItems.length || null}
+                    count={cartItemsFromState.length || cartItems.length || null}
                   >
                     <ShoppingCartOutlined className="cursor-pointer text-xl" />
                   </Badge>

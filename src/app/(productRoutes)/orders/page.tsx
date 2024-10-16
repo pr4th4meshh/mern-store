@@ -33,7 +33,7 @@ const Orders_Page = () => {
         dataSource={userCart}
         renderItem={(item: any) => (
           <List.Item
-          className="border-gray-400 rounded-lg shadow-lg"
+          className="border-gray-400 rounded-lg shadow-lg my-4"
             key={item.products?.name}
             extra={
               <Image
