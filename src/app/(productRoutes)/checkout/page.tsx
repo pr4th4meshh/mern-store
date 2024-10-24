@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useState } from "react"
 import { Form, Input, message } from "antd"
 import { useSelector } from "react-redux"
 import { useRouter } from "next/navigation"
@@ -8,6 +8,8 @@ import BillComponent from "@/components/ui/BillComponent"
 import { useGetUserDetailsQuery } from "@/lib/api-slices/userApiSlice"
 
 const CheckoutPage = () => {
+  const [finalAmount, setFinalAmount] = useState(0)
+  const [couponCode, setCouponCode] = useState("")
   const [form] = Form.useForm()
   const userState = useSelector((state:any) => state.user.currentUser)
   const { data: user } = useGetUserDetailsQuery(userState._id)
@@ -30,7 +32,8 @@ const CheckoutPage = () => {
         products: orderProducts,
         phoneNumber,
         deliveryAddress,
-        totalAmount: calculateTotalPrice(cartProducts),
+        totalAmount: finalAmount,
+        couponCodeToApply: couponCode
       })
 
       message.loading("Redirecting to payment page")
@@ -95,7 +98,7 @@ const CheckoutPage = () => {
           </Form.Item>
         </Form>
 
-        <BillComponent />
+        <BillComponent onDiscountApplied={setFinalAmount} couponCode={setCouponCode} />
       </div>
     </div>
   )

@@ -10,6 +10,7 @@ import { userApiSlice } from "./api-slices/userApiSlice"
 import { productsApiSlice } from "./api-slices/productsApiSlice"
 import { ordersApiSlice } from "./api-slices/ordersApiSlice"
 import { paymentApiSlice } from "./api-slices/paymentApiSlice"
+import { discountApiSlice } from "./api-slices/discountApiSlice"
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   [userApiSlice.reducerPath]: userApiSlice.reducer,
   [productsApiSlice.reducerPath]: productsApiSlice.reducer,
   [ordersApiSlice.reducerPath]: ordersApiSlice.reducer,
-  [paymentApiSlice.reducerPath]: paymentApiSlice.reducer
+  [paymentApiSlice.reducerPath]: paymentApiSlice.reducer,
+  [discountApiSlice.reducerPath]: discountApiSlice.reducer
 })
 
 const persistConfig = {
@@ -41,7 +43,8 @@ export const store = configureStore({
       userApiSlice.middleware,
       productsApiSlice.middleware,
       ordersApiSlice.middleware,
-      paymentApiSlice.middleware
+      paymentApiSlice.middleware,
+      discountApiSlice.middleware
     ),
 })
 
