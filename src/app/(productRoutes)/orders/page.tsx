@@ -1,7 +1,11 @@
 "use client"
 import React, { useEffect } from "react"
-import { StarOutlined } from "@ant-design/icons"
-import { List, Space } from "antd"
+import {
+  ExclamationCircleOutlined,
+  QuestionCircleOutlined,
+  StarOutlined,
+} from "@ant-design/icons"
+import { Button, List, Popconfirm, Space } from "antd"
 import { useGetAllUserOrdersQuery } from "@/lib/api-slices/ordersApiSlice"
 import { useSelector } from "react-redux"
 import Image from "next/image"
@@ -33,7 +37,7 @@ const Orders_Page = () => {
         dataSource={userCart}
         renderItem={(item: any) => (
           <List.Item
-          className="border-gray-400 rounded-lg shadow-lg my-4"
+            className="border-gray-400 rounded-lg shadow-lg my-4"
             key={item.products?.name}
             extra={
               <Image
@@ -48,8 +52,11 @@ const Orders_Page = () => {
             <div className="flex flex-col">
               <h1 className="text-xl font-semibold">Products:</h1>
               {item.products.map((product: any, i: number) => (
-                <Link href={`/product/${product.product._id}`} >
-                    <span className="text-lg"> &#8599; {product.product.name}</span>
+                <Link href={`/product/${product.product._id}`}>
+                  <span className="text-lg">
+                    {" "}
+                    &#8599; {product.product.name}
+                  </span>
                 </Link>
               ))}
               <h1 className="text-lg">
@@ -62,6 +69,24 @@ const Orders_Page = () => {
               <h1 className="text-lg">
                 on {moment(item.updatedAt).format("D MMM YYYY")}
               </h1>
+              <Popconfirm
+                title="Cancel order"
+                description="Are you sure you want to cancel the order?"
+                onConfirm={() => null}
+                onCancel={() => null}
+                okText="Confirm"
+                cancelText="Cancel"
+                placement="right"
+                icon={
+                  <ExclamationCircleOutlined
+                    style={{ color: "red", fontSize: 18 }}
+                  />
+                }
+              >
+                <Button className="w-min mt-2" danger>
+                  Cancel Order
+                </Button>
+              </Popconfirm>
             </div>
           </List.Item>
         )}
