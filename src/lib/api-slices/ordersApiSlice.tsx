@@ -18,31 +18,39 @@ export const ordersApiSlice = createApi({
   }),
   endpoints: (builder) => ({
     createOrder: builder.mutation({
-        query: (orderData) => ({
-          url: '/create',
-          method: 'POST',
-          body: orderData,
-        }),
+      query: (orderData) => ({
+        url: "/create",
+        method: "POST",
+        body: orderData,
       }),
-      getOrderStatus: builder.query({
-        query: (orderId) => `/orders/${orderId}/status`,
+    }),
+    getOrderStatus: builder.query({
+      query: (orderId) => `/orders/${orderId}/status`,
+    }),
+    updateOrderStatus: builder.mutation({
+      query: ({ orderId, status }) => ({
+        url: `/orders/${orderId}/status`,
+        method: "PATCH",
+        body: { status },
       }),
-      updateOrderStatus: builder.mutation({
-        query: ({ orderId, status }) => ({
-          url: `/orders/${orderId}/status`,
-          method: 'PATCH',
-          body: { status },
-        }),
+    }),
+    getAllUserOrders: builder.query({
+      query: (userId) => `/${userId}/allOrders`,
+    }),
+    updateOrderStatusToCancel: builder.mutation({
+      query: (orderId) => ({
+        url: "/cancel",
+        method: "POST",
+        body: { orderId },
       }),
-      getAllUserOrders: builder.query({
-        query: (userId) => `/${userId}/allOrders`
-      })
+    }),
   }),
 })
 
 export const {
-    useCreateOrderMutation,
-    useGetOrderStatusQuery,
-    useUpdateOrderStatusMutation,
-    useGetAllUserOrdersQuery
+  useCreateOrderMutation,
+  useGetOrderStatusQuery,
+  useUpdateOrderStatusMutation,
+  useGetAllUserOrdersQuery,
+  useUpdateOrderStatusToCancelMutation,
 } = ordersApiSlice
