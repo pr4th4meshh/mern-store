@@ -1,23 +1,57 @@
 "use client"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import {
   ExclamationCircleOutlined,
   QuestionCircleOutlined,
   StarOutlined,
 } from "@ant-design/icons"
-import { Button, List, Popconfirm, Space } from "antd"
-import { useGetAllUserOrdersQuery } from "@/lib/api-slices/ordersApiSlice"
+import { Button, List, message, Modal } from "antd"
+import {
+  useGetAllUserOrdersQuery,
+  useUpdateOrderStatusToCancelMutation,
+} from "@/lib/api-slices/ordersApiSlice"
 import { useSelector } from "react-redux"
 import Image from "next/image"
 import moment from "moment"
 import Link from "next/link"
 
 const Orders_Page = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentOrderId, setCurrentOrderId] = useState<string | null>(null)
+
   const user = useSelector((state: any) => state.user.currentUser)
   const { data: userCart, refetch } = useGetAllUserOrdersQuery(user._id)
+  const [cancelOrder] = useUpdateOrderStatusToCancelMutation()
+
   useEffect(() => {
     refetch()
   }, [refetch])
+
+  const showModal = (orderId: string) => {
+    setCurrentOrderId(orderId)
+    setIsModalOpen(true)
+  }
+
+  const handleCancelOrder = async () => {
+    if (!currentOrderId) return
+
+    try {
+      await cancelOrder(currentOrderId).unwrap()
+      message.success("Order cancelled successfully")
+      refetch()
+    } catch (error) {
+      message.error("Failed to cancel order")
+      console.error(error)
+    } finally {
+      setIsModalOpen(false)
+      setCurrentOrderId(null)
+    }
+  }
+
+  const handleCancel = () => {
+    setIsModalOpen(false)
+    setCurrentOrderId(null)
+  }
 
   if (!userCart || userCart.length < 1) {
     return (
@@ -38,7 +72,7 @@ const Orders_Page = () => {
         renderItem={(item: any) => (
           <List.Item
             className="border-gray-400 rounded-lg shadow-lg my-4"
-            key={item.products?.name}
+            key={item._id}
             extra={
               <Image
                 width={200}
@@ -51,10 +85,12 @@ const Orders_Page = () => {
           >
             <div className="flex flex-col">
               <h1 className="text-xl font-semibold">Products:</h1>
-              {item.products.map((product: any, i: number) => (
-                <Link href={`/product/${product.product._id}`}>
+              {item.products.map((product: any) => (
+                <Link
+                  href={`/product/${product.product._id}`}
+                  key={product.product._id}
+                >
                   <span className="text-lg">
-                    {" "}
                     &#8599; {product.product.name}
                   </span>
                 </Link>
@@ -69,28 +105,32 @@ const Orders_Page = () => {
               <h1 className="text-lg">
                 on {moment(item.updatedAt).format("D MMM YYYY")}
               </h1>
-              <Popconfirm
-                title="Cancel order"
-                description="Are you sure you want to cancel the order?"
-                onConfirm={() => null}
-                onCancel={() => null}
-                okText="Confirm"
-                cancelText="Cancel"
-                placement="right"
-                icon={
-                  <ExclamationCircleOutlined
-                    style={{ color: "red", fontSize: 18 }}
-                  />
-                }
-              >
-                <Button className="w-min mt-2" danger>
-                  Cancel Order
+              {item.status === "cancelled" ? (
+                <></>
+              ) : (
+                <Button
+                  danger
+                  className="w-min mt-2"
+                  onClick={() => showModal(item._id)}
+                >
+                  Cancel order
                 </Button>
-              </Popconfirm>
+              )}
             </div>
           </List.Item>
         )}
       />
+      <Modal
+        title="Cancel Order"
+        open={isModalOpen}
+        onOk={handleCancelOrder}
+        onCancel={handleCancel}
+        okText="Confirm"
+        cancelText="Cancel"
+      >
+        <h1>Are you sure you want to cancel the order?</h1>
+        <h1>This action cannot be reversed</h1>
+      </Modal>
     </div>
   )
 }
